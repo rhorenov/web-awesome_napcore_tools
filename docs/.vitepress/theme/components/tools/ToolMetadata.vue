@@ -5,14 +5,14 @@
       <li v-if="resolvedCategories.length > 0">
         <strong>Categories</strong>:
         <template v-for="(category, index) in resolvedCategories" :key="category.slug">
-          <a :href="withBase(category.url)">{{ category.title }}</a>
+          <a :href="withBase(`/categories/${category.slug}`)">{{ category.title }}</a>
           <span v-if="index < resolvedCategories.length - 1">, </span>
         </template>
       </li>
       <li v-if="resolvedStandards.length > 0">
         <strong>Standards</strong>:
         <template v-for="(standard, index) in resolvedStandards" :key="standard.slug">
-          <a :href="withBase(standard.url)">{{ standard.title }}</a>
+          <a :href="withBase(`/standards/${standard.slug}`)">{{ standard.title }}</a>
           <span v-if="index < resolvedStandards.length - 1">, </span>
         </template>
       </li>
@@ -89,62 +89,19 @@
  * - **Single source of truth**: All data comes from frontmatter
  */
 import { computed } from 'vue';
-import { useData } from 'vitepress';
-import { getCategoryBySlug } from '@/core/metadata/categories';
-import { data as standardsData } from '@/core/data-loaders/standards.data';
-import { withBase } from 'vitepress';
+import { useData, withBase } from 'vitepress';
+import { resolveCategories } from '@/core/metadata/categories';
+import { resolveStandards } from '@/core/metadata/standards';
 
 const { frontmatter } = useData();
 
 /**
- * Resolve category slugs to display titles and URLs.
- * Reads category slugs from frontmatter, looks up their metadata from categories.ts,
- * and constructs clickable links to category pages.
- *
- * @returns Array of objects with title, slug, and url for each category
- * @example
- * Input: categories: ['validators', 'data-quality']
- * Output: [
- *   { title: 'Validators', slug: 'validators', url: '/categories/validators' },
- *   { title: 'Data Quality Tools', slug: 'data-quality', url: '/categories/data-quality' }
- * ]
+ * Resolve category/standard slugs from frontmatter to their full metadata
+ * (title + slug), via the shared resolvers. Links are built from the slug in the
+ * template.
  */
-const resolvedCategories = computed(() => {
-  const categories = frontmatter.value.categories || [];
-  return categories
-    .map((slug: string) => {
-      const category = getCategoryBySlug(slug);
-      return category
-        ? { title: category.title, slug, url: `/categories/${slug}` }
-        : { title: slug, slug, url: `/categories/${slug}` };
-    })
-    .filter((item: { title: string; slug: string; url: string }) => item.title);
-});
-
-/**
- * Resolve standard slugs to display titles and URLs.
- * Reads standard slugs from frontmatter, looks up their metadata from standards.data.ts,
- * and constructs clickable links to standard pages.
- *
- * @returns Array of objects with title, slug, and url for each standard
- * @example
- * Input: standards: ['datex-ii', 'netex']
- * Output: [
- *   { title: 'DATEX II', slug: 'datex-ii', url: '/standards/datex-ii' },
- *   { title: 'NeTEx', slug: 'netex', url: '/standards/netex' }
- * ]
- */
-const resolvedStandards = computed(() => {
-  const standards = frontmatter.value.standards || [];
-  return standards
-    .map((slug: string) => {
-      const standard = standardsData[slug];
-      return standard
-        ? { title: standard.title, slug, url: `/standards/${slug}` }
-        : { title: slug, slug, url: `/standards/${slug}` };
-    })
-    .filter((item: { title: string; slug: string; url: string }) => item.title);
-});
+const resolvedCategories = computed(() => resolveCategories(frontmatter.value.categories));
+const resolvedStandards = computed(() => resolveStandards(frontmatter.value.standards));
 
 /**
  * Display type as comma-separated string if array.

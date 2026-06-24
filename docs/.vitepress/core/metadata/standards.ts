@@ -52,6 +52,45 @@ export function getStandardMetadata(standardSlug: string): StandardMetadata {
 }
 
 /**
+ * A standard with its slug attached. The YAML keys entries by slug, so the
+ * Standard value type itself has none; resolvers attach it for callers that
+ * need to key/link by slug.
+ */
+export interface ResolvedStandard extends Standard {
+  slug: string;
+}
+
+/**
+ * Resolve a slug to its full Standard plus slug, falling back to a minimal
+ * placeholder (title = slug) for an unknown slug so callers always get a
+ * renderable entity. Build-time validation already rejects unknown slugs, so the
+ * fallback is purely defensive. Shared by the tool metadata views that turn slugs
+ * into linked titles.
+ */
+export function resolveStandard(slug: string): ResolvedStandard {
+  const standard = STANDARDS[slug];
+  return standard
+    ? { slug, ...standard }
+    : {
+        slug,
+        title: slug,
+        icon: '📄',
+        domain: '',
+        purpose: '',
+        format_technology: '',
+        maintainer_origin: '',
+        status: '',
+      };
+}
+
+/**
+ * Resolve a list of standard slugs, preserving order. Undefined/empty input → [].
+ */
+export function resolveStandards(slugs: string[] | undefined): ResolvedStandard[] {
+  return (slugs ?? []).map(resolveStandard);
+}
+
+/**
  * Export the complete standards data for modules that need full details
  */
 export { STANDARDS };

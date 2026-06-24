@@ -57,3 +57,20 @@ export function getCategorySlugs(): string[] {
 export function getCategoryBySlug(slug: string): Category | undefined {
   return CATEGORIES.find((cat) => cat.slug === slug);
 }
+
+/**
+ * Resolve a slug to its full Category, falling back to a minimal placeholder
+ * (title = slug) for an unknown slug so callers always get a renderable entity.
+ * Build-time validation already rejects unknown slugs, so the fallback is purely
+ * defensive. Shared by the tool metadata views that turn slugs into linked titles.
+ */
+export function resolveCategory(slug: string): Category {
+  return getCategoryBySlug(slug) ?? { slug, title: slug, icon: '📁', description: '' };
+}
+
+/**
+ * Resolve a list of category slugs, preserving order. Undefined/empty input → [].
+ */
+export function resolveCategories(slugs: string[] | undefined): Category[] {
+  return (slugs ?? []).map(resolveCategory);
+}

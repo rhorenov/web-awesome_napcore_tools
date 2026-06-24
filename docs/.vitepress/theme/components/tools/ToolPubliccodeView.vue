@@ -29,19 +29,21 @@
           <td><strong>Status</strong></td>
           <td>🔴 Deprecated</td>
         </tr>
-        <tr v-if="t.categories?.length">
+        <tr v-if="resolvedCategories.length">
           <td><strong>Categories</strong></td>
           <td>
-            <span v-for="(cat, i) in t.categories" :key="cat"
-              ><template v-if="i > 0">, </template><a :href="`/categories/${cat}`">{{ cat }}</a></span
+            <span v-for="(cat, i) in resolvedCategories" :key="cat.slug"
+              ><template v-if="i > 0">, </template
+              ><a :href="withBase(`/categories/${cat.slug}`)">{{ cat.title }}</a></span
             >
           </td>
         </tr>
-        <tr v-if="t.standards?.length">
+        <tr v-if="resolvedStandards.length">
           <td><strong>Standards</strong></td>
           <td>
-            <span v-for="(std, i) in t.standards" :key="std"
-              ><template v-if="i > 0">, </template><a :href="`/standards/${std}`">{{ std }}</a></span
+            <span v-for="(std, i) in resolvedStandards" :key="std.slug"
+              ><template v-if="i > 0">, </template
+              ><a :href="withBase(`/standards/${std.slug}`)">{{ std.title }}</a></span
             >
           </td>
         </tr>
@@ -235,14 +237,19 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useData } from 'vitepress';
+import { useData, withBase } from 'vitepress';
 import type { Tool } from '../../core/data-loaders/tools.data';
+import { resolveCategories } from '@/core/metadata/categories';
+import { resolveStandards } from '@/core/metadata/standards';
 
 const { params: p } = useData();
 
 type PubliccodeRecord = Record<string, unknown>;
 
 const t = computed((): Tool => (p.value?.tool as Tool) ?? ({} as Tool));
+
+const resolvedCategories = computed(() => resolveCategories(t.value.categories));
+const resolvedStandards = computed(() => resolveStandards(t.value.standards));
 const pc = computed((): PubliccodeRecord => (p.value?.publiccode as PubliccodeRecord) ?? {});
 const pcEn = computed(
   (): PubliccodeRecord => ((pc.value?.description as PubliccodeRecord)?.en as PubliccodeRecord) ?? {}
