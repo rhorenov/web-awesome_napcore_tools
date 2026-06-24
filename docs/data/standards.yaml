@@ -2,6 +2,7 @@ datex-ii:
   title: DATEX II
   longTitle: European Standard for Traffic and Travel Information Exchange - CEN/TS 16157
   icon: 🚦
+  logo: /icons/standards/datex-ii.png
   description: European standard for traffic and travel information exchange
   domain: Road traffic and travel information
   purpose: Standard for exchanging road and traffic data such as incidents, roadworks, and traffic status between road authorities and service providers.
@@ -18,6 +19,7 @@ netex:
   title: NeTEx
   longTitle: Network Timetable Exchange
   icon: 🚇
+  logo: /icons/standards/transmodel.png
   description: Network Timetable Exchange - public transport network data
   domain: Public transport (scheduled data)
   purpose: Data exchange standard for sharing public transport schedules, routes, stops, and fare information, based on the TransModel conceptual model.
@@ -34,6 +36,7 @@ siri:
   title: SIRI
   longTitle: Service Interface for Real-time Information
   icon: 📡
+  logo: /icons/standards/transmodel.png
   description: Service Interface for Real-time Information - live transit data
   domain: Public transport (real-time information)
   purpose: Defines interfaces for exchanging live operational data like vehicle positions, departures, and service alerts between systems.
@@ -49,6 +52,7 @@ mobilitydcat-ap:
   title: mobilityDCAT-AP
   longTitle: Mobility Data Catalog Application Profile
   icon: 🏷️
+  logo: /icons/standards/mobilitydcat-ap.png
   description: Mobility Data Catalog Application Profile - metadata standard
   domain: Transport and mobility data catalogues
   purpose: Profile of DCAT-AP tailored for describing datasets and APIs in National Access Points (NAPs) for mobility data.
@@ -67,6 +71,7 @@ dcat-ap:
   title: DCAT-AP
   longTitle: Data Catalog Vocabulary Application Profile for Europe
   icon: 📋
+  logo: /icons/standards/dcat-ap.png
   description: Data Catalog Application Profile - EU open data metadata
   domain: Open data and metadata cataloguing
   purpose: Common model for describing datasets, APIs, and catalogues to enable interoperability among European open data portals.
@@ -83,6 +88,7 @@ isodis-14819:
   title: ISO/DIS 14819
   longTitle: Intelligent transport systems — Traffic and travel information messages via traffic message coding
   icon: 📍
+  logo: /icons/standards/tmc.svg
   description: ALERT-C location referencing standard
   domain: Road traffic and navigation systems
   purpose: Defines the RDS-TMC message sets for broadcasting traffic and travel information to in-vehicle systems.
@@ -97,6 +103,7 @@ rds-tmc:
   title: RDS-TMC
   longTitle: Radio Data System – Traffic Message Channel
   icon: 📻
+  logo: /icons/standards/tmc.svg
   description: Radio Data System - Traffic Message Channel
   domain: Road traffic information broadcasting
   purpose: Encodes traffic messages into FM radio broadcasts to deliver real-time traffic updates to navigation systems.
@@ -111,6 +118,7 @@ gtfs:
   title: GTFS
   longTitle: General Transit Feed Specification
   icon: 🚌
+  logo: /icons/standards/gtfs.png
   description: General Transit Feed Specification
   domain: Public transport (static data)
   purpose: Open format for publishing scheduled public transport data including routes, stops, and timetables.
@@ -126,6 +134,7 @@ gtfs-realtime:
   title: GTFS Realtime
   longTitle: Real-time transit updates extension for GTFS
   icon: ⚡
+  logo: /icons/standards/gtfs.png
   description: Real-time transit updates extension for GTFS
   domain: Public transport (real-time data)
   purpose: Real-time extension of GTFS providing live updates on vehicle positions, trip progress, and service alerts.
@@ -140,6 +149,7 @@ gbfs:
   title: GBFS
   longTitle: General Bikeshare Feed Specification
   icon: 🚲
+  logo: /icons/standards/gbfs.png
   description: General Bikeshare Feed Specification - standard for shared mobility systems
   domain: Micromobility and shared mobility
   purpose: Defines a standard format for sharing real-time data about shared vehicles (bikes, scooters, etc.).
@@ -155,6 +165,7 @@ transmodel:
   title: TransModel
   longTitle: European Reference Data Model for Public Transport
   icon: 🗺️
+  logo: /icons/standards/transmodel.png
   description: European reference data model for public transport
   domain: Public transport conceptual modelling
   purpose: Conceptual data model describing the structure and relationships of public transport information (network, timetables, operations).
@@ -170,6 +181,7 @@ rdf:
   title: RDF
   longTitle: Resource Description Framework
   icon: 🔗
+  logo: /icons/standards/rdf.svg
   description: Resource Description Framework - W3C standard for linked data and semantic web
   domain: Semantic web and linked data
   purpose: Framework for representing and linking structured data across the web, foundational to DCAT and mobilityDCAT-AP.
@@ -203,6 +215,7 @@ osm:
   title: OSM
   longTitle: OpenStreetMap
   icon: 🌍
+  logo: /icons/standards/osm.svg
   description: OpenStreetMap - collaborative open-source mapping data
   domain: Geospatial and transport mapping
   purpose: Collaborative open geodata project providing maps, networks, and location references widely used in transport applications.
