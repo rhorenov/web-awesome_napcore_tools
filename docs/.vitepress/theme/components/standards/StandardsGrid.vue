@@ -7,7 +7,8 @@
       class="category-card standard-card"
     >
       <span class="category-badge">{{ standard.count }}</span>
-      <span class="category-icon">{{ standard.icon }}</span>
+      <img v-if="standard.logo" :src="withBase(standard.logo)" :alt="standard.name" class="standard-logo" />
+      <span v-else class="category-icon">{{ standard.icon }}</span>
       <h3 class="category-title">{{ standard.name }}</h3>
       <p v-if="standard.description" class="category-description">{{ standard.description }}</p>
     </a>
@@ -51,6 +52,7 @@ const standards = computed(() => {
       slug,
       count,
       icon: metadata.icon,
+      logo: metadata.logo,
       description: metadata.description,
     };
   });
@@ -75,6 +77,16 @@ const standards = computed(() => {
 
 <style scoped>
 /* StandardsGrid uses the same card styling as CategoryGrid, with a subtle color accent */
+
+/* Logo image stands in for the emoji icon; sized to match .category-icon (3rem) */
+.standard-logo {
+  display: block;
+  height: 3rem;
+  width: auto;
+  max-width: 80%;
+  margin: 0 auto 1rem;
+  object-fit: contain;
+}
 
 .standard-card::before {
   /* Use green accent for standards (vs blue for categories) */

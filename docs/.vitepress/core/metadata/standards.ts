@@ -19,6 +19,7 @@ export interface StandardMetadata {
   title: string;
   endorsed?: boolean;
   icon: string;
+  logo?: string;
   description?: string;
 }
 
@@ -38,6 +39,7 @@ export function getStandardMetadata(standardSlug: string): StandardMetadata {
       title: standard.title,
       endorsed: standard.endorsed,
       icon: standard.icon,
+      logo: standard.logo,
       description: standard.description,
     };
   }
@@ -47,6 +49,7 @@ export function getStandardMetadata(standardSlug: string): StandardMetadata {
     title: standardSlug,
     endorsed: undefined,
     icon: '📄',
+    logo: undefined,
     description: undefined,
   };
 }

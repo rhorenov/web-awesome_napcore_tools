@@ -186,6 +186,7 @@ shacl:
   title: SHACL
   longTitle: Shapes Constraint Language
   icon: 🔷
+  logo: /icons/standards/shacl.svg
   description: Shapes Constraint Language - W3C standard for validating RDF graphs
   domain: Semantic web and linked data (validation)
   purpose: W3C language for describing and validating RDF graphs against a set of conditions (shapes), commonly used to check DCAT-AP and mobilityDCAT-AP metadata for conformance.
