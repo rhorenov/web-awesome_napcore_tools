@@ -14,6 +14,13 @@ import { withBase } from 'vitepress'
 
 ::: details {{ $params.details.longTitle }}
 
+<img
+  v-if="$params.details.logo"
+  :src="withBase($params.details.logo)"
+  :alt="$params.standardName"
+  style="display: block; height: 4rem; width: auto; margin: 1.25rem 0 -0.75rem; padding: 0;"
+/>
+
 ### Overview
 
 **Domain:** {{ $params.details.domain }}
