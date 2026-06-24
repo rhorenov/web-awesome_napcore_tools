@@ -59,6 +59,7 @@ mobilitydcat-ap:
     - datex-ii
     - netex
     - gtfs
+    - shacl
   status: EU specification (ITS Directive)
   link: https://w3id.org/mobilitydcat-ap/
 
@@ -74,6 +75,7 @@ dcat-ap:
   related_standards:
     - mobilitydcat-ap
     - rdf
+    - shacl
   status: EU profile of W3C standard
   link: https://op.europa.eu/en/web/eu-vocabularies/dcat-ap
 
@@ -176,8 +178,25 @@ rdf:
   related_standards:
     - dcat-ap
     - mobilitydcat-ap
+    - shacl
   status: W3C core standard
   link: https://www.w3.org/RDF/
+
+shacl:
+  title: SHACL
+  longTitle: Shapes Constraint Language
+  icon: 🔷
+  description: Shapes Constraint Language - W3C standard for validating RDF graphs
+  domain: Semantic web and linked data (validation)
+  purpose: W3C language for describing and validating RDF graphs against a set of conditions (shapes), commonly used to check DCAT-AP and mobilityDCAT-AP metadata for conformance.
+  format_technology: RDF (Turtle, RDF/XML, JSON-LD)
+  maintainer_origin: W3C
+  related_standards:
+    - rdf
+    - dcat-ap
+    - mobilitydcat-ap
+  status: W3C standard (Recommendation)
+  link: https://www.w3.org/TR/shacl/
 
 osm:
   title: OSM

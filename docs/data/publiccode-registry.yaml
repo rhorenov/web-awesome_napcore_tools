@@ -33,6 +33,7 @@ shacl-validator:
       - data-quality
       - testing
     standards:
+      - shacl
       - mobilitydcat-ap
       - rdf
       - dcat-ap
