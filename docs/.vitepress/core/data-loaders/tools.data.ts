@@ -80,6 +80,28 @@ export function mapStatus(developmentStatus: string | undefined): string {
   return developmentStatus === 'obsolete' ? 'deprecated' : 'active';
 }
 
+/** Maximum number of maintainers listed by name; the rest are summarised as "+N more". */
+const MAX_MAINTAINERS = 5;
+
+/**
+ * Returns the maintainers from a publiccode.yml `maintenance` block: the named `contacts`,
+ * falling back to `contractors` when there are none. ToolPubliccodeView mirrors this selection.
+ */
+export function publiccodeMaintainers(maintenance: PubliccodeRecord | undefined): PubliccodeRecord[] {
+  const named = (list: unknown): PubliccodeRecord[] =>
+    ((list as PubliccodeRecord[]) ?? []).filter((m) => typeof m?.name === 'string' && m.name.trim() !== '');
+  const contacts = named(maintenance?.contacts);
+  return contacts.length ? contacts : named(maintenance?.contractors);
+}
+
+/** Joins maintainer names for `Tool.maintainedBy`, capped at MAX_MAINTAINERS, e.g. "Alice, Bob +2 more". */
+function formatMaintainers(maintainers: PubliccodeRecord[]): string | undefined {
+  if (!maintainers.length) return undefined;
+  const names = maintainers.slice(0, MAX_MAINTAINERS).map((m) => (m.name as string).trim());
+  const more = maintainers.length - MAX_MAINTAINERS;
+  return names.join(', ') + (more > 0 ? ` +${more} more` : '');
+}
+
 /**
  * Reads and parses `publiccode-registry.yaml`. Returns an empty object if the file is absent.
  * A malformed registry throws in production (so overrides are never silently dropped) and is
@@ -130,8 +152,6 @@ export function toolFromPubliccode(
   const pcDesc = ((publiccode.description as PubliccodeRecord)?.en as PubliccodeRecord) ?? {};
   const pcLegal = (publiccode.legal as PubliccodeRecord) ?? {};
   const pcMaintenance = (publiccode.maintenance as PubliccodeRecord) ?? {};
-  const pcContacts = ((pcMaintenance.contacts as PubliccodeRecord[]) ?? [])[0] ?? {};
-  const pcContractors = ((pcMaintenance.contractors as PubliccodeRecord[]) ?? [])[0] ?? {};
 
   const base: Tool = {
     slug,
@@ -145,7 +165,7 @@ export function toolFromPubliccode(
     website: (publiccode.landingURL as string) || undefined,
     documentation: (pcDesc.documentation as string) || undefined,
     developer: (pcLegal.mainCopyrightOwner as string) || undefined,
-    maintainedBy: ((pcContacts.name as string) ?? (pcContractors.name as string)) || undefined,
+    maintainedBy: formatMaintainers(publiccodeMaintainers(pcMaintenance)),
     // publiccode `releaseDate` is the date of the *latest* release, not the first.
     lastUpdated: (publiccode.releaseDate as string) || undefined,
     tags: (publiccode.tags as string[]) || [],

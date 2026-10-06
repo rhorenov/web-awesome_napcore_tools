@@ -155,7 +155,7 @@ values below.
 | `landingURL`                      | `website`                                  |
 | `legal.license`                   | `license`                                  |
 | `legal.mainCopyrightOwner`        | `developer`                                |
-| `maintenance.contacts[0].name`    | `maintainedBy` (or `contractors[0].name`)  |
+| `maintenance.contacts[].name`     | `maintainedBy` (or `contractors[].name`)   |
 | `developmentStatus`               | `status` (see notes)                       |
 | `releaseDate`                     | `lastUpdated` (it is the _latest_ release) |
 | `softwareVersion`                 | `softwareVersion`                          |
@@ -172,6 +172,8 @@ Fields with no `publiccode.yml` equivalent (`categories`, `standards`, `endorsed
   ITS/mobility taxonomy. Always assign categories in `napcore-tools`.
 - **`developmentStatus`**: mapped coarsely. `obsolete` becomes `deprecated`, everything else
   becomes `active`. Set `status` in `napcore-tools` for `maintenance` or finer control.
+- **`maintainedBy`**: all named `contacts` (or `contractors` when there are no contacts),
+  up to five; any further ones are summarised as "+N more".
 - **`standards`, `endorsed`**: no `publiccode.yml` equivalent; set them in `napcore-tools`.
 
 ---

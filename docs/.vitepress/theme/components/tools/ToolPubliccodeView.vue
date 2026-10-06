@@ -87,12 +87,18 @@
         </tr>
         <tr v-if="t.maintainedBy">
           <td><strong>Maintained by</strong></td>
-          <td>
-            {{ t.maintainedBy
-            }}<template v-if="pcContact.affiliation">
-              · <em>{{ pcContact.affiliation }}</em></template
+          <td v-if="showMaintainerList">
+            <span v-for="(m, i) in pcMaintainers.slice(0, MAX_MAINTAINERS)" :key="i"
+              ><template v-if="i > 0">, </template>{{ m.name
+              }}<template v-if="m.affiliation">
+                (<em>{{ m.affiliation }}</em
+                >)</template
+              ></span
+            ><template v-if="pcMaintainers.length > MAX_MAINTAINERS">
+              +{{ pcMaintainers.length - MAX_MAINTAINERS }} more</template
             >
           </td>
+          <td v-else>{{ t.maintainedBy }}</td>
         </tr>
         <tr v-if="pcMaintenance.type">
           <td><strong>Maintenance</strong></td>
@@ -255,13 +261,19 @@ const pcEn = computed(
   (): PubliccodeRecord => ((pc.value?.description as PubliccodeRecord)?.en as PubliccodeRecord) ?? {}
 );
 const pcMaintenance = computed((): PubliccodeRecord => (pc.value?.maintenance as PubliccodeRecord) ?? {});
-const pcContact = computed((): PubliccodeRecord => {
-  return (
-    ((pcMaintenance.value.contacts as PubliccodeRecord[]) ?? [])[0] ??
-    ((pcMaintenance.value.contractors as PubliccodeRecord[]) ?? [])[0] ??
-    {}
-  );
+// Same selection and cap as publiccodeMaintainers() in tools.data.ts: named contacts, else contractors.
+const MAX_MAINTAINERS = 5;
+const pcMaintainers = computed((): PubliccodeRecord[] => {
+  const named = (list: unknown): PubliccodeRecord[] =>
+    ((list as PubliccodeRecord[]) ?? []).filter((m) => typeof m?.name === 'string' && m.name.trim() !== '');
+  const contacts = named(pcMaintenance.value.contacts);
+  return contacts.length ? contacts : named(pcMaintenance.value.contractors);
 });
+// A registry override of `maintainedBy` won't start with the first publiccode maintainer; show it verbatim.
+const showMaintainerList = computed(
+  () =>
+    pcMaintainers.value.length > 0 && !!t.value.maintainedBy?.startsWith((pcMaintainers.value[0].name as string).trim())
+);
 const pcContacts = computed((): PubliccodeRecord[] => (pcMaintenance.value.contacts as PubliccodeRecord[]) ?? []);
 const pcLocalisation = computed((): PubliccodeRecord => (pc.value?.localisation as PubliccodeRecord) ?? {});
 const pcAudience = computed((): PubliccodeRecord => (pc.value?.intendedAudience as PubliccodeRecord) ?? {});

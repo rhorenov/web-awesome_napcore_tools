@@ -12,6 +12,11 @@ vi.mock('@/core/validation/tools', () => ({
 // Now import after mocking
 import toolsDataLoader from '@/core/data-loaders/tools.data';
 
+// tests/setup.ts mocks the loader module wholesale; the publiccode helpers are pure, so test the real ones
+const { publiccodeMaintainers, toolFromPubliccode } = await vi.importActual<
+  typeof import('@/core/data-loaders/tools.data')
+>('@/core/data-loaders/tools.data');
+
 describe('tools.data', () => {
   describe('Tool Loading', () => {
     it('should load tools successfully', () => {
@@ -186,6 +191,49 @@ describe('tools.data', () => {
           });
         }
       });
+    });
+  });
+
+  describe('publiccode maintainers', () => {
+    const names = (maintenance: Record<string, unknown>) => publiccodeMaintainers(maintenance).map((m) => m.name);
+
+    it('lists all named contacts in maintainedBy', () => {
+      const tool = toolFromPubliccode('otp', undefined, {
+        name: 'OpenTripPlanner',
+        maintenance: {
+          contacts: [
+            { name: 'Andrew Byrd' },
+            { name: 'Thomas Gran', affiliation: 'Entur AS' },
+            { name: 'Leonard Ehrenfried' },
+          ],
+        },
+      });
+      expect(tool?.maintainedBy).toBe('Andrew Byrd, Thomas Gran, Leonard Ehrenfried');
+    });
+
+    it('caps the list at five names', () => {
+      const contacts = Array.from({ length: 7 }, (_, i) => ({ name: `M${i + 1}` }));
+      expect(toolFromPubliccode('x', undefined, { maintenance: { contacts } })?.maintainedBy).toBe(
+        'M1, M2, M3, M4, M5 +2 more'
+      );
+    });
+
+    it('falls back to contractors when there are no contacts', () => {
+      expect(names({ contacts: [], contractors: [{ name: 'Acme Ltd' }] })).toEqual(['Acme Ltd']);
+    });
+
+    it('skips entries without a name', () => {
+      expect(names({ contacts: [{ email: 'x@example.com' }, { name: '  ' }, { name: 'Alice' }] })).toEqual(['Alice']);
+    });
+
+    it('leaves maintainedBy undefined without a maintenance block', () => {
+      expect(publiccodeMaintainers(undefined)).toEqual([]);
+      expect(toolFromPubliccode('x', undefined, {})?.maintainedBy).toBeUndefined();
+    });
+
+    it('lets a registry override win', () => {
+      const tool = toolFromPubliccode('x', { maintainedBy: 'NAPCORE' }, { maintenance: { contacts: [{ name: 'A' }] } });
+      expect(tool?.maintainedBy).toBe('NAPCORE');
     });
   });
 });
