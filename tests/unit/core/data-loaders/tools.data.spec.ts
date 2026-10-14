@@ -210,10 +210,10 @@ describe('tools.data', () => {
       expect(tool?.maintainedBy).toBe('Andrew Byrd, Thomas Gran, Leonard Ehrenfried');
     });
 
-    it('caps the list at five names', () => {
-      const contacts = Array.from({ length: 7 }, (_, i) => ({ name: `M${i + 1}` }));
+    it('caps the list at ten names', () => {
+      const contacts = Array.from({ length: 12 }, (_, i) => ({ name: `M${i + 1}` }));
       expect(toolFromPubliccode('x', undefined, { maintenance: { contacts } })?.maintainedBy).toBe(
-        'M1, M2, M3, M4, M5 +2 more'
+        'M1, M2, M3, M4, M5, M6, M7, M8, M9, M10 +2 more'
       );
     });
 

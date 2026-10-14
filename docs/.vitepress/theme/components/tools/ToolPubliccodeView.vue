@@ -94,8 +94,10 @@
                 (<em>{{ m.affiliation }}</em
                 >)</template
               ></span
-            ><template v-if="pcMaintainers.length > MAX_MAINTAINERS">
-              +{{ pcMaintainers.length - MAX_MAINTAINERS }} more</template
+            ><template v-if="pcMaintainers.length > MAX_MAINTAINERS"
+              >{{ ' '
+              }}<a v-if="maintainersAreContacts" href="#contacts">+{{ pcMaintainers.length - MAX_MAINTAINERS }} more</a
+              ><template v-else>+{{ pcMaintainers.length - MAX_MAINTAINERS }} more</template></template
             >
           </td>
           <td v-else>{{ t.maintainedBy }}</td>
@@ -191,7 +193,7 @@
     </template>
 
     <template v-if="pcContacts.length">
-      <h2>Contacts</h2>
+      <h2 id="contacts">Contacts</h2>
       <ul>
         <li v-for="(contact, i) in pcContacts" :key="i">
           {{ contact.name
@@ -262,7 +264,7 @@ const pcEn = computed(
 );
 const pcMaintenance = computed((): PubliccodeRecord => (pc.value?.maintenance as PubliccodeRecord) ?? {});
 // Same selection and cap as publiccodeMaintainers() in tools.data.ts: named contacts, else contractors.
-const MAX_MAINTAINERS = 5;
+const MAX_MAINTAINERS = 10;
 const pcMaintainers = computed((): PubliccodeRecord[] => {
   const named = (list: unknown): PubliccodeRecord[] =>
     ((list as PubliccodeRecord[]) ?? []).filter((m) => typeof m?.name === 'string' && m.name.trim() !== '');
@@ -275,6 +277,8 @@ const showMaintainerList = computed(
     pcMaintainers.value.length > 0 && !!t.value.maintainedBy?.startsWith((pcMaintainers.value[0].name as string).trim())
 );
 const pcContacts = computed((): PubliccodeRecord[] => (pcMaintenance.value.contacts as PubliccodeRecord[]) ?? []);
+// The full list is in the Contacts section only when the maintainers came from `contacts`
+const maintainersAreContacts = computed(() => pcContacts.value.includes(pcMaintainers.value[0]));
 const pcLocalisation = computed((): PubliccodeRecord => (pc.value?.localisation as PubliccodeRecord) ?? {});
 const pcAudience = computed((): PubliccodeRecord => (pc.value?.intendedAudience as PubliccodeRecord) ?? {});
 const pcOrg = computed((): PubliccodeRecord => (pc.value?.organisation as PubliccodeRecord) ?? {});

@@ -173,7 +173,7 @@ Fields with no `publiccode.yml` equivalent (`categories`, `standards`, `endorsed
 - **`developmentStatus`**: mapped coarsely. `obsolete` becomes `deprecated`, everything else
   becomes `active`. Set `status` in `napcore-tools` for `maintenance` or finer control.
 - **`maintainedBy`**: all named `contacts` (or `contractors` when there are no contacts),
-  up to five; any further ones are summarised as "+N more".
+  up to ten; any further ones are summarised as "+N more", linking to the Contacts section.
 - **`standards`, `endorsed`**: no `publiccode.yml` equivalent; set them in `napcore-tools`.
 
 ### Input limits

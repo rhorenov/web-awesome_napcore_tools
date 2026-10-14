@@ -215,7 +215,7 @@ export function loadPubliccode(slug: string): PubliccodeRecord | null {
 }
 
 /** Maximum number of maintainers listed by name; the rest are summarised as "+N more". */
-const MAX_MAINTAINERS = 5;
+const MAX_MAINTAINERS = 10;
 
 /**
  * Returns the maintainers from a publiccode.yml `maintenance` block: the named `contacts`,
