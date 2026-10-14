@@ -14,15 +14,18 @@
  * return `undefined` so VitePress' default splitter handles it normally.
  */
 
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { parse as parseYaml } from 'yaml';
-import { type PubliccodeRecord, type Tool, loadRegistry, toolFromPubliccode } from '../data-loaders/tools.data';
+import {
+  type PubliccodeRecord,
+  type Tool,
+  loadPubliccode,
+  loadRegistry,
+  toolFromPubliccode,
+} from '../data-loaders/tools.data';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // docs/.vitepress/core/search → docs/data/...
-const publiccodeDir = path.resolve(__dirname, '../../../data/publiccode');
 const registryPath = path.resolve(__dirname, '../../../data/publiccode-registry.yaml');
 
 /**
@@ -82,15 +85,8 @@ export function splitPubliccodeToolIntoSections(file: string, html: string): Sea
   const slug = match[1];
   if (slug.startsWith('[') || slug === 'index') return undefined;
 
-  const pcPath = path.join(publiccodeDir, slug, 'publiccode.yml');
-  if (!fs.existsSync(pcPath)) return undefined; // not a publiccode tool
-
-  let pc: PubliccodeRecord;
-  try {
-    pc = (parseYaml(fs.readFileSync(pcPath, 'utf-8')) as PubliccodeRecord) ?? {};
-  } catch {
-    return undefined;
-  }
+  const pc = loadPubliccode(slug);
+  if (!pc) return undefined; // not a publiccode tool, or unparseable
 
   const registry = loadRegistry(registryPath);
   const tool = toolFromPubliccode(slug, registry[slug]?.['napcore-tools'], pc);

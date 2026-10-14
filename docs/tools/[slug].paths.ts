@@ -16,9 +16,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { parse as parseYaml } from 'yaml';
-import { type PubliccodeRecord, loadRegistry, toolFromPubliccode } from '../.vitepress/core/data-loaders/tools.data';
-import { reportParseError } from '../.vitepress/core/validation/utils';
+import { loadPubliccode, loadRegistry, toolFromPubliccode } from '../.vitepress/core/data-loaders/tools.data';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -48,16 +46,9 @@ export default {
       // Hand-crafted pages take priority — skip tools that already have one
       if (existingSlugs.has(dirName)) continue;
 
-      let publiccodeRecord: PubliccodeRecord = {};
-      try {
-        publiccodeRecord =
-          (parseYaml(
-            fs.readFileSync(path.join(publiccodeDir, dirName, 'publiccode.yml'), 'utf-8')
-          ) as PubliccodeRecord) ?? {};
-      } catch (e) {
-        reportParseError(`Failed to parse publiccode.yml for ${dirName}: ${e}`);
-        continue;
-      }
+      // Sanitised: publiccode.yml comes from a third-party repository
+      const publiccodeRecord = loadPubliccode(dirName);
+      if (!publiccodeRecord) continue;
 
       const tool = toolFromPubliccode(dirName, registry[dirName]?.['napcore-tools'], publiccodeRecord);
       if (!tool) continue;
@@ -67,7 +58,7 @@ export default {
           slug: tool.slug, // VitePress route parameter — matches [slug] in filename
           title: tool.title, // picked up by transformPageData in config.ts to set <title>
           tool, // full typed Tool object
-          publiccode: publiccodeRecord, // raw publiccode.yml — for fields beyond Tool
+          publiccode: publiccodeRecord, // sanitised publiccode.yml — for fields beyond Tool
         },
         // Search indexing for these file-less pages is handled separately, via
         // search.options.miniSearch._splitIntoSections (see core/search/publiccodeSearch.ts).

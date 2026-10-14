@@ -176,6 +176,24 @@ Fields with no `publiccode.yml` equivalent (`categories`, `standards`, `endorsed
   up to five; any further ones are summarised as "+N more".
 - **`standards`, `endorsed`**: no `publiccode.yml` equivalent; set them in `napcore-tools`.
 
+### Input limits
+
+`publiccode.yml` files come from third-party repositories, so every one is sanitised when it
+is loaded (`loadPubliccode()` in `tools.data.ts`). The page, the catalogue and the search index
+only ever see the sanitised record; the cached files themselves stay byte-for-byte upstream.
+
+| Limit                                                          | Value                      | Beyond the limit      |
+| -------------------------------------------------------------- | -------------------------- | --------------------- |
+| Items per array                                                | 50                         | Extra items dropped   |
+| Keys per object                                                | 50                         | Extra keys dropped    |
+| String length                                                  | 10,000 chars               | Truncated             |
+| Nesting depth                                                  | 10 levels                  | Deeper values dropped |
+| URL fields (`url`, `uri`, `logo`, `roadmap`, `screenshots`, …) | `http(s)` or relative only | Value dropped         |
+
+The limits are set well above anything a real project needs; they only stop runaway or
+malicious input. Every cut is printed as a build warning naming the tool and the field, e.g.
+`publiccode.yml for open_trip_planner: maintenance.contacts truncated (73 → 50 items)`.
+
 ---
 
 ## Updating cached files

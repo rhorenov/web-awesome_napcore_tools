@@ -13,9 +13,8 @@ vi.mock('@/core/validation/tools', () => ({
 import toolsDataLoader from '@/core/data-loaders/tools.data';
 
 // tests/setup.ts mocks the loader module wholesale; the publiccode helpers are pure, so test the real ones
-const { publiccodeMaintainers, toolFromPubliccode } = await vi.importActual<
-  typeof import('@/core/data-loaders/tools.data')
->('@/core/data-loaders/tools.data');
+const { PUBLICCODE_LIMITS, loadPubliccode, publiccodeMaintainers, sanitisePubliccode, toolFromPubliccode } =
+  await vi.importActual<typeof import('@/core/data-loaders/tools.data')>('@/core/data-loaders/tools.data');
 
 describe('tools.data', () => {
   describe('Tool Loading', () => {
@@ -234,6 +233,89 @@ describe('tools.data', () => {
     it('lets a registry override win', () => {
       const tool = toolFromPubliccode('x', { maintainedBy: 'NAPCORE' }, { maintenance: { contacts: [{ name: 'A' }] } });
       expect(tool?.maintainedBy).toBe('NAPCORE');
+    });
+  });
+
+  describe('publiccode sanitisation', () => {
+    const sanitise = (record: Record<string, unknown>) => {
+      const cuts: string[] = [];
+      return { result: sanitisePubliccode(record, (msg) => cuts.push(msg)), cuts };
+    };
+
+    it('returns a normal record unchanged, without reports', () => {
+      const record = {
+        name: 'OpenTripPlanner',
+        url: 'https://github.com/opentripplanner/opentripplanner',
+        logo: 'docs/logo.svg',
+        tags: ['routing', 'gtfs'],
+        maintenance: { type: 'community', contacts: [{ name: 'Andrew Byrd', email: 'andrew@fastmail.net' }] },
+      };
+      const { result, cuts } = sanitise(record);
+      expect(result).toEqual(record);
+      expect(cuts).toEqual([]);
+    });
+
+    it('does not modify its input', () => {
+      const record = { tags: Array.from({ length: 60 }, (_, i) => `t${i}`) };
+      sanitise(record);
+      expect(record.tags).toHaveLength(60);
+    });
+
+    it('caps arrays at the item limit, at any depth', () => {
+      const contacts = Array.from({ length: 73 }, (_, i) => ({ name: `M${i}` }));
+      const { result, cuts } = sanitise({ maintenance: { contacts } });
+      const kept = (result.maintenance as { contacts: unknown[] }).contacts;
+      expect(kept).toHaveLength(PUBLICCODE_LIMITS.arrayItems);
+      expect(cuts).toEqual(['maintenance.contacts truncated (73 → 50 items)']);
+    });
+
+    it('caps string length', () => {
+      const { result, cuts } = sanitise({ name: 'x'.repeat(PUBLICCODE_LIMITS.stringLength + 5) });
+      expect(result.name).toHaveLength(PUBLICCODE_LIMITS.stringLength);
+      expect(cuts).toHaveLength(1);
+    });
+
+    it('caps the number of keys per object', () => {
+      const description = Object.fromEntries(Array.from({ length: 60 }, (_, i) => [`l${i}`, {}]));
+      const { result, cuts } = sanitise({ description });
+      expect(Object.keys(result.description as object)).toHaveLength(PUBLICCODE_LIMITS.objectKeys);
+      expect(cuts).toEqual(['description truncated (60 → 50 keys)']);
+    });
+
+    it('drops values nested deeper than the depth limit', () => {
+      let deep: Record<string, unknown> = { leaf: 'x' };
+      for (let i = 0; i < PUBLICCODE_LIMITS.depth + 2; i++) deep = { a: deep };
+      const { cuts } = sanitise(deep);
+      expect(cuts).toHaveLength(1);
+      expect(cuts[0]).toMatch(/dropped \(nested deeper than 10 levels\)$/);
+    });
+
+    it('drops URLs with a scheme other than http(s)', () => {
+      const { result, cuts } = sanitise({
+        roadmap: 'javascript:alert(1)',
+        landingURL: ' java\tscript:alert(1)',
+        organisation: { name: 'Org', uri: 'data:text/html,x' },
+        description: { en: { screenshots: ['https://example.com/a.png', 'img/b.png', 'vbscript:x'] } },
+        url: 'https://github.com/x/y',
+      });
+      expect(result).toEqual({
+        organisation: { name: 'Org' },
+        description: { en: { screenshots: ['https://example.com/a.png', 'img/b.png'] } },
+        url: 'https://github.com/x/y',
+      });
+      expect(cuts).toHaveLength(4);
+    });
+
+    it('drops a __proto__ key', () => {
+      const { result, cuts } = sanitise(JSON.parse('{"__proto__": {"polluted": true}, "name": "x"}'));
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
+      expect(result).toEqual({ name: 'x' });
+      expect(cuts).toEqual(['__proto__ dropped (reserved key)']);
+    });
+
+    it('loadPubliccode returns a sanitised record, or null for a missing file', () => {
+      expect(loadPubliccode('open_trip_planner')?.name).toBe('OpenTripPlanner');
+      expect(loadPubliccode('does-not-exist')).toBeNull();
     });
   });
 });
