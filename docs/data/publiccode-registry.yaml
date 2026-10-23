@@ -133,3 +133,35 @@ geocoder:
       - route-planners
     standards:
       - osm
+
+nirgali:
+  source: https://github.com/entur/nirgali
+  napcore-tools:
+    categories:
+      - data-editors
+    standards:
+      - siri
+
+anshar:
+  source: https://github.com/entur/anshar
+  napcore-tools:
+    categories:
+      - data-aggregators
+    standards:
+      - siri
+
+vehicle-map-demo:
+  source: https://github.com/entur/vehicle-map-demo
+  napcore-tools:
+    categories:
+      - reference-implementations
+    standards:
+      - siri
+
+mobility-map-demo:
+  source: https://github.com/entur/mobility-map-demo
+  napcore-tools:
+    categories:
+      - reference-implementations
+    standards:
+      - gbfs
