@@ -4,7 +4,7 @@ title: NPlan
 description: Open-source editor and backend system for creating and maintaining demand-responsive transport (DRT), flexible transport services, and timetable-based route planning
 fullDescription: NPlan is an open-source editor and backend system designed for small and medium-sized public transport operators and authorities to create and maintain demand-responsive transport (DRT), flexible transport services, and timetable-based route planning. It consists of the Enki web editor (frontend) and the Uttu backend services, forming a complete toolchain for planning, editing, and exporting transport data in NeTEx format.
 categories:
-  - reference-implementations
+  - data-editors
 status: active
 endorsed: false
 license: EUPL-1.2
