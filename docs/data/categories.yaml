@@ -108,6 +108,17 @@ route-planners:
     - validators
     - data-quality
 
+data-editors:
+  title: Data Editors & Registries
+  icon: ✎
+  description: Editors and registries for creating and maintaining mobility data, such as stop places, timetables and real-time deviation messages
+  related:
+    - data-quality
+    - validators
+    - converters
+    - data-aggregators
+    - development
+
 data-aggregators:
   title: Data Aggregators
   icon: 📡
