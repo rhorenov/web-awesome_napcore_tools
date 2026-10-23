@@ -108,6 +108,17 @@ route-planners:
     - validators
     - data-quality
 
+data-aggregators:
+  title: Data Aggregators
+  icon: 📡
+  description: Services that collect feeds from many producers in a standard format and republish them as one combined feed
+  related:
+    - converters
+    - validators
+    - data-quality
+    - route-planners
+    - metadata
+
 references:
   title: Reference Documentations
   icon: 📚

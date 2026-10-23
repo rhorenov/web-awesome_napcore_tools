@@ -10,7 +10,7 @@ document: category
 import { data as _categoriesData } from '../.vitepress/core/data-loaders/categories.data'
 </script>
 
-# {{ $params.icon }} {{ $params.categoryName }}
+# {{ $params.categoryName }}
 
 <p v-if="$params.description">{{ $params.description }}</p>
 
