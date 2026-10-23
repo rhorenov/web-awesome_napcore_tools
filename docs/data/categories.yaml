@@ -122,7 +122,7 @@ data-editors:
 data-aggregators:
   title: Data Aggregators
   icon: 📡
-  description: Services that collect feeds from many producers in a standard format and republish them as one combined feed
+  description: Services that collect feeds from many producers in a standard format and redistribute them, combined or filtered for subscribers
   related:
     - converters
     - validators
