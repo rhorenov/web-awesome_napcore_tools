@@ -49,3 +49,87 @@ open_trip_planner:
       - gtfs
       - transmodel
       - siri
+
+# Entur (Norway)
+
+netex-validator-java:
+  source: https://github.com/entur/netex-validator-java
+  napcore-tools:
+    categories:
+      - validators
+      - sdks
+    standards:
+      - netex
+
+antu:
+  source: https://github.com/entur/antu
+  napcore-tools:
+    categories:
+      - validators
+      - data-quality
+    standards:
+      - netex
+
+tiamat:
+  source: https://github.com/entur/tiamat
+  napcore-tools:
+    categories:
+      - data-editors
+    standards:
+      - netex
+
+abzu:
+  source: https://github.com/entur/abzu
+  napcore-tools:
+    categories:
+      - data-editors
+    standards:
+      - netex
+
+enlil:
+  source: https://github.com/entur/enlil
+  napcore-tools:
+    categories:
+      - data-editors
+    standards:
+      - siri
+
+extime:
+  source: https://github.com/entur/extime
+  napcore-tools:
+    categories:
+      - converters
+    standards:
+      - netex
+
+gibil:
+  source: https://github.com/entur/gibil
+  napcore-tools:
+    categories:
+      - converters
+    standards:
+      - siri
+
+lamassu:
+  source: https://github.com/entur/lamassu
+  napcore-tools:
+    categories:
+      - data-aggregators
+    standards:
+      - gbfs
+
+ukur:
+  source: https://github.com/entur/ukur
+  napcore-tools:
+    categories:
+      - data-aggregators
+    standards:
+      - siri
+
+geocoder:
+  source: https://github.com/entur/geocoder
+  napcore-tools:
+    categories:
+      - route-planners
+    standards:
+      - osm
