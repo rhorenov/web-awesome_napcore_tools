@@ -7,7 +7,7 @@ import { validateAllStandards } from './core/validation/standards';
 import { validateAllCategories } from './core/validation/categories';
 import { handleValidationResult } from './core/validation/utils';
 import { buildEnd } from './buildEnd';
-import { splitPubliccodeToolIntoSections } from './core/search/publiccodeSearch';
+import { splitDynamicPageIntoSections } from './core/search/dynamicPageSearch';
 import llmstxtPlugin from 'vitepress-plugin-llmstxt';
 import { fileURLToPath, URL } from 'node:url';
 
@@ -115,12 +115,12 @@ export default defineConfig({
     search: {
       provider: 'local',
       options: {
-        // Dynamic publiccode tool pages have no Markdown file on disk, so the indexer
-        // renders them to empty and can't see their text. splitPubliccodeToolIntoSections
-        // rebuilds their searchable text from publiccode.yml; for every other page it
-        // returns undefined so VitePress' default splitter runs.
+        // Dynamic pages (publiccode tools, generated categories and standards) have no
+        // Markdown file on disk, so the indexer renders them to empty and can't see their
+        // text. splitDynamicPageIntoSections rebuilds their searchable text from the data
+        // files; for every other page it returns undefined so VitePress' default splitter runs.
         miniSearch: {
-          _splitIntoSections: splitPubliccodeToolIntoSections,
+          _splitIntoSections: splitDynamicPageIntoSections,
         },
         // Fold selected frontmatter (standards, categories, tags, description) into the
         // local search index for hand-crafted tool pages, so a tool is findable by its

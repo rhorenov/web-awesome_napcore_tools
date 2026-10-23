@@ -32,7 +32,7 @@ const registryPath = path.resolve(__dirname, '../../../data/publiccode-registry.
  * A single search index section, matching the shape VitePress' default splitter
  * yields: the last `titles` entry becomes the result title, the rest its breadcrumb.
  */
-interface SearchSection {
+export interface SearchSection {
   anchor: string;
   titles: string[];
   text: string;
