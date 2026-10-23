@@ -100,7 +100,7 @@ metadata:
 route-planners:
   title: Route Planners
   icon: 🗺️
-  description: Intermodal travel information system
+  description: Intermodal journey planners and supporting services such as geocoding
   related:
     - sdks
     - reference-implementations
