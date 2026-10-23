@@ -23,8 +23,9 @@ export default defineConfig({
   // Opt out of parallel tests on CI
   workers: process.env.CI ? 1 : undefined,
 
-  // Reporter to use
-  reporter: 'html',
+  // Write the HTML report without serving it, so a failed run exits instead of
+  // waiting for Ctrl+C. Open it with `npx playwright show-report`.
+  reporter: [['html', { open: 'never' }]],
 
   use: {
     // Base URL for testing
