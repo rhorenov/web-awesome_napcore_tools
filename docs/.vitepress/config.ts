@@ -37,7 +37,7 @@ export default defineConfig({
       'link',
       { rel: 'alternate', type: 'text/markdown', title: 'Complete LLM-friendly documentation', href: '/llms-full.txt' },
     ],
-    ['meta', { name: 'theme-color', content: '#0066cc' }],
+    ['meta', { name: 'theme-color', content: '#ffcb01' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: 'Awesome NAPCORE' }],
     ['meta', { property: 'og:description', content: 'Curated tools for European mobility data professionals' }],
@@ -70,7 +70,7 @@ export default defineConfig({
   ignoreDeadLinks: ['/feed.rss'],
 
   themeConfig: {
-    logo: 'https://napcore.eu/wp-content/themes/napcore/images/napcore-logo.png',
+    logo: { light: '/napcore-logo-navy.png', dark: '/napcore-logo-dark.png' },
 
     outline: {
       level: [2, 3],

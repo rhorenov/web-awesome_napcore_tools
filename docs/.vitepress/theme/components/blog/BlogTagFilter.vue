@@ -189,7 +189,7 @@ function clearFilters() {
 .tag-button.active {
   background-color: var(--vp-c-brand-1);
   border-color: var(--vp-c-brand-1);
-  color: white;
+  color: var(--napcore-on-brand);
 }
 
 .tag-button.active:hover {
@@ -212,7 +212,7 @@ function clearFilters() {
 
 .tag-button.active .tag-count {
   background-color: rgba(255, 255, 255, 0.3);
-  color: white;
+  color: var(--napcore-on-brand);
 }
 
 @media (max-width: 640px) {

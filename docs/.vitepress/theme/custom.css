@@ -1,47 +1,8 @@
 /**
  * Awesome NAPCORE Tools - Custom Theme
- * Colors inspired by NAPCORE branding
  */
 
-:root {
-  /* NAPCORE Brand Colors */
-  --vp-c-brand-1: #0066cc;
-  --vp-c-brand-2: #0052a3;
-  --vp-c-brand-3: #004080;
-  --vp-c-brand-soft: rgba(0, 102, 204, 0.14);
-
-  /* Accent Colors */
-  --napcore-green: #00a651;
-  --napcore-orange: #ff6b35;
-
-  /* Custom Theme Colors */
-  --vp-c-green-1: #00a651;
-  --vp-c-green-2: #008a44;
-  --vp-c-green-3: #006f37;
-  --vp-c-green-soft: rgba(0, 166, 81, 0.14);
-
-  /* Hero Gradient */
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(135deg, #0066cc 0%, #004080 100%);
-
-  /* Button Colors */
-  --vp-button-brand-bg: #0066cc;
-  --vp-button-brand-hover-bg: #0052a3;
-  --vp-button-brand-active-bg: #004080;
-}
-
-/* Dark mode adjustments */
-.dark {
-  --vp-c-brand-1: #4d9fff;
-  --vp-c-brand-2: #3385ff;
-  --vp-c-brand-3: #0066cc;
-}
-
-/* Logo adjustments */
-.VPNavBarTitle .logo {
-  max-height: 40px;
-  width: auto;
-}
+/* Brand tokens and VitePress overrides live in napcore-theme.css */
 
 /* Custom homepage styles */
 .VPHome {
@@ -83,7 +44,7 @@
 
 .tool-card:hover {
   border-color: var(--vp-c-brand-1);
-  box-shadow: 0 8px 24px rgba(0, 102, 204, 0.12);
+  box-shadow: 0 8px 24px var(--napcore-shadow);
   transform: translateY(-4px);
 }
 
@@ -160,9 +121,9 @@
 }
 
 .tool-endorsed {
-  background: rgba(0, 102, 204, 0.07);
+  background: color-mix(in srgb, var(--vp-c-brand-1) 7%, transparent);
   color: var(--vp-c-brand-1);
-  border: 1px solid rgba(0, 102, 204, 0.15);
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 15%, transparent);
 }
 
 .tool-links {
@@ -188,7 +149,7 @@
 
 a.tool-link:hover {
   background: var(--vp-c-brand-1);
-  color: white;
+  color: var(--napcore-on-brand);
 }
 
 /* Category cards */
@@ -227,7 +188,7 @@ a.tool-link:hover {
 
 .category-card:hover {
   border-color: var(--vp-c-brand-1);
-  box-shadow: 0 8px 24px rgba(0, 102, 204, 0.12);
+  box-shadow: 0 8px 24px var(--napcore-shadow);
   transform: translateY(-4px);
 }
 
@@ -322,11 +283,6 @@ a.tool-link:hover {
   vertical-align: middle;
 }
 
-.dark .sidebar-badge {
-  background: rgba(77, 159, 255, 0.2);
-  color: var(--vp-c-brand-1);
-}
-
 .pager .sidebar-badge {
   display: none;
 }
@@ -386,7 +342,7 @@ a.title > span {
   padding: 0.4rem 1.75rem;
   border-radius: 20px;
   background: var(--vp-c-brand-1);
-  color: #fff;
+  color: var(--napcore-on-brand);
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
@@ -395,7 +351,7 @@ a.title > span {
 
 .hp-section-cta a:hover {
   background: var(--vp-c-brand-2);
-  color: #fff;
+  color: var(--napcore-on-brand);
 }
 
 .hp-panel {
@@ -433,7 +389,7 @@ a.title > span {
 }
 
 .hp-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 102, 204, 0.1);
+  box-shadow: 0 4px 16px var(--napcore-shadow);
   transform: translateY(-2px);
 }
 

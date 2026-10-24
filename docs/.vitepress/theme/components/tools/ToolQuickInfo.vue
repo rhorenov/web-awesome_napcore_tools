@@ -142,9 +142,9 @@ img {
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 500;
-  background: rgba(0, 102, 204, 0.07);
+  background: color-mix(in srgb, var(--vp-c-brand-1) 7%, transparent);
   color: var(--vp-c-brand-1);
-  border: 1px solid rgba(0, 102, 204, 0.15);
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 15%, transparent);
 }
 
 .endorsed-logo {

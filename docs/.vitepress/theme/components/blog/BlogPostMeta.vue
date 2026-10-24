@@ -138,7 +138,7 @@ const formattedDate = computed(() => {
 .tag.standard:hover {
   transform: translateY(-1px);
   background-color: var(--vp-c-brand-1);
-  color: white;
+  color: var(--napcore-on-brand);
   border-color: var(--vp-c-brand-1);
 }
 

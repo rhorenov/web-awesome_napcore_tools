@@ -152,7 +152,7 @@ details.chapter summary {
 
 /* H2 has a separator */
 details.chapter > summary:has(h2) {
-  border-top: 0.8px solid rgb(226, 226, 227); /* The continuous horizontal bar */
+  border-top: 2px solid var(--napcore-rule); /* Matches the .vp-doc h2 separator */
   margin-top: 48px;
 }
 

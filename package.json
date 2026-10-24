@@ -42,6 +42,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@fontsource/titillium-web": "^5.3.0",
     "vue": "^3.5.13",
     "yaml": "^2.4.0"
   },

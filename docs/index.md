@@ -28,7 +28,8 @@ features:
     details: Only openly accessible tools are included.
     link: /contribute#open-tool-criteria
   - icon:
-      src: /napcore-logo.png
+      light: /napcore-logo.png
+      dark: /napcore-logo-dark.png
       alt: NAPCORE logo
       width: "64"
       height: "64"

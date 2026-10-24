@@ -2,6 +2,11 @@
 import { h } from 'vue';
 import type { Theme } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
+import '@fontsource/titillium-web/400.css';
+import '@fontsource/titillium-web/400-italic.css';
+import '@fontsource/titillium-web/600.css';
+import '@fontsource/titillium-web/700.css';
+import './napcore-theme.css';
 import './custom.css';
 import './blog.css';
 import './markdown-sections.css';
