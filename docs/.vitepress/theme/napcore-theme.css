@@ -237,9 +237,21 @@
   color: var(--napcore-navy);
 }
 
-/* Feature cards get the yellow top stripe used across napcore.eu */
+/* Feature cards: a thin border like the panels below them, navy titles, and
+   every icon in a 48px-high box so the wide NAPCORE logo doesn't pull its
+   title out of line */
 .VPFeatures .VPFeature {
-  box-shadow: inset 0 4px 0 var(--napcore-yellow);
+  border-color: var(--vp-c-divider);
+}
+
+.VPFeatures .VPFeature .title {
+  color: var(--napcore-heading);
+}
+
+.VPFeatures .VPFeature .VPImage {
+  height: 48px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 /* ============================================================================
