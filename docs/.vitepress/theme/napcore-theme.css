@@ -74,7 +74,7 @@
   /* VitePress: home hero */
   --vp-home-hero-name-color: var(--napcore-yellow);
   --vp-home-hero-name-background: none;
-  --vp-home-hero-image-background-image: linear-gradient(#fff, #fff);
+  --vp-home-hero-image-background-image: none;
   --vp-home-hero-image-filter: none;
 
   --vp-nav-bg-color: var(--napcore-nav-bg);
@@ -189,10 +189,24 @@
   --vp-c-text-1: #fff;
   --vp-c-text-2: rgba(255, 255, 255, 0.85);
 
-  background:
-    repeating-radial-gradient(circle at 80% 55%, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 26px),
-    linear-gradient(135deg, var(--napcore-navy) 0%, var(--napcore-navy-dark) 100%);
+  background: linear-gradient(135deg, var(--napcore-navy) 0%, var(--napcore-navy-dark) 100%);
   margin-bottom: 48px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Concentric rings across the band, centred on the wheel at every width */
+.VPHome .VPHero .image-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  width: 2400px;
+  height: 2400px;
+  transform: translate(-50%, -50%);
+  background: repeating-radial-gradient(circle, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 26px);
+  pointer-events: none;
 }
 
 .VPHero .name {
@@ -202,12 +216,6 @@
 .VPHero .text {
   color: #fff;
   font-weight: 600;
-}
-
-/* White disc behind the logo, sized so the wordmark sits inside it */
-.VPHero .image-bg {
-  transform: translate(-50%, -50%) scale(1.2);
-  box-shadow: 0 0 0 6px var(--napcore-yellow);
 }
 
 /* Hero buttons: alt buttons are white outlines on the navy band */

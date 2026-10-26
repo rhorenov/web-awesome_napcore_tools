@@ -5,8 +5,8 @@ hero:
   text: European Mobility Data Tools Catalogue
   tagline: Discover tools from NAPCORE and the wider community
   image:
-    src: /napcore-logo.png
-    alt: NAPCORE Logo
+    src: /napcore-wheel.webp
+    alt: ""
   actions:
     - theme: brand
       text: See Tools by NAPCORE
