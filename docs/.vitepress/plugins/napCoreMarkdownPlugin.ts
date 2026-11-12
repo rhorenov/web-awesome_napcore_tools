@@ -6,7 +6,6 @@ interface FrontmatterData {
   title?: string;
   description?: string;
   fullDescription?: string;
-  contributeTip?: string;
   [key: string]: unknown;
 }
 
@@ -38,22 +37,12 @@ function processToolDocument(data: FrontmatterData): string {
 }
 
 /**
- * Generates markdown footer for category documents.
- * Creates a standardized footer with separator and contribution tip.
+ * Generates markdown footer for category documents: a separator after the tool list.
  *
- * @param data - Frontmatter data from the category markdown file
  * @returns Markdown string with formatted footer content
  */
-function processCategoryDocument(data: FrontmatterData): string {
-  let footer = '\n\n---\n\n';
-
-  // Add contribution tip if provided
-  if (data.contributeTip) {
-    // Do not add footer ...
-    // footer += `::: tip Want to Contribute?\n\n${data.contributeTip}\n[Contribute a tool →](/contribute)\n:::\n`;
-  }
-
-  return footer;
+function processCategoryDocument(): string {
+  return '\n\n---\n\n';
 }
 
 /**
@@ -75,7 +64,7 @@ export function napCoreMarkdownPlugin(md: MarkdownIt) {
     if (data.document === 'tool') {
       header = processToolDocument(data as FrontmatterData);
     } else if (data.document === 'category') {
-      footer = processCategoryDocument(data as FrontmatterData);
+      footer = processCategoryDocument();
     }
     // Add more document types here:
     // else if (data.document === 'guide') {
