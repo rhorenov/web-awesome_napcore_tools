@@ -1,3 +1,7 @@
+---
+editLink: false
+---
+
 # Tools by NAPCORE
 
 Tools built and maintained directly by the NAPCORE project.

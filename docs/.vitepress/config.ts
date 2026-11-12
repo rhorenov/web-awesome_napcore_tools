@@ -67,6 +67,11 @@ export default defineConfig({
     if (pageData.params?.title) {
       pageData.title = pageData.params.title;
     }
+    // A dynamic route has no source file of its own (the edit link would point at a missing
+    // docs/categories/<slug>.md), and its content comes from data files, so hide the link
+    if (pageData.params) {
+      pageData.frontmatter.editLink = false;
+    }
   },
 
   // Generate RSS feed at build time

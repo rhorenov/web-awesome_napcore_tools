@@ -1,3 +1,7 @@
+---
+editLink: false
+---
+
 # All Tools
 
 The complete catalogue of mobility data tools, both those built by the NAPCORE project
