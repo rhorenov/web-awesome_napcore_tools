@@ -4,6 +4,7 @@ import { napCoreMarkdownPlugin } from './plugins/napCoreMarkdownPlugin';
 import { collapsePlugin } from './plugins/collapsePlugin';
 import { chapterPlugin } from './plugins/chapterPlugin';
 import { okfDevPlugin } from './plugins/okfDevPlugin';
+import { llmsDevPlugin } from './plugins/llmsDevPlugin';
 import { validateAllStandards } from './core/validation/standards';
 import { validateAllCategories } from './core/validation/categories';
 import { handleValidationResult } from './core/validation/utils';
@@ -37,6 +38,8 @@ const SRC_DIR = fileURLToPath(new URL('..', import.meta.url));
 
 // Site data for the llms.txt transform, loaded on first use
 let llmsContext: LlmsContext | undefined;
+// The finished llms files by URL path, for llmsDevPlugin
+const llmsFiles = new Map<string, string>();
 
 export default defineConfig({
   title: 'Awesome NAPCORE',
@@ -225,9 +228,12 @@ export default defineConfig({
           } else {
             page.content = fixIndexLinks(page.content, ctx.base);
           }
+          llmsFiles.set(page.path, page.content);
           return page;
         },
       }),
+      // Dev only, after llmstxtPlugin: its own dev middleware does not work on Windows
+      llmsDevPlugin(llmsFiles),
     ],
     resolve: {
       preserveSymlinks: true,
