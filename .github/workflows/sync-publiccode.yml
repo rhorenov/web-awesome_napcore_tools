@@ -48,6 +48,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        # Don't install the git pre-commit hook here. The "Create pull request"
+        # step makes a git commit, which would run the hook (lint-staged and the
+        # Playwright E2E tests), and this job has no Playwright browsers.
+        env:
+          SKIP_INSTALL_SIMPLE_GIT_HOOKS: 1
 
       - name: Sync publiccode files
         id: sync
