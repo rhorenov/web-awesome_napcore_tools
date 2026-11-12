@@ -27,7 +27,7 @@ All user-facing content must use **British English** spelling. Key differences:
 
 ### TypeScript Patterns
 
-- **Always use existing interfaces**: The `Tool` interface in `docs/.vitepress/tools.data.ts` is the canonical type for tool metadata
+- **Always use existing interfaces**: The `Tool` interface in `docs/.vitepress/core/data-loaders/tools.data.ts` is the canonical type for tool metadata
 - **Use `Partial<Tool>`** for validation and partial data contexts (not `Record<string, unknown>` or `any`)
 - **Prototype safety**: Use `Object.hasOwn(obj, key)` instead of `obj.hasOwnProperty(key)`
 - **Unused parameters**: Prefix with underscore (e.g., `_router`, `_filename`) to satisfy ESLint
@@ -79,13 +79,15 @@ enhanceApp({ app, _router, _siteData }) {
 
 ### Data Loaders
 
-VitePress data loaders (files ending in `.data.ts`):
+VitePress data loaders (files ending in `.data.ts`, in `docs/.vitepress/core/data-loaders/`):
 - `tools.data.ts`: Parses tool markdown frontmatter, exports `Tool` interface
 - `stats.data.ts`: Combines manual and dynamic statistics
-- `sidebar.ts`: Dynamic sidebar with tool counts per category
 - `blog.data.ts`: Loads blog posts using `createContentLoader()`, exports `BlogPost` interface
+- `categories.data.ts`, `standards.data.ts`, `blogTags.data.ts`: Load the YAML files in `docs/data/`
 
-**Tool Validation** (`toolValidation.ts`):
+`docs/.vitepress/core/config/sidebar.ts` builds the dynamic sidebar with tool counts per category.
+
+**Tool Validation** (`docs/.vitepress/core/validation/tools.ts`):
 - Validates tool frontmatter using `Partial<Tool>` type
 - Caches validation results globally
 - Checks required fields, categories, and status values
@@ -138,7 +140,7 @@ published: true           # Set to false for drafts
 **Preview Mode** (Environment Variable):
 - Set `VITE_PREVIEW_MODE` (any value) to show scheduled posts
 - Checks: `typeof process.env.VITE_PREVIEW_MODE !== 'undefined'`
-- Used in both `blog.data.ts` and `buildEnd.ts`
+- Implemented in `core/utils/postVisibility.ts`, used by `blog.data.ts` and `buildEnd.ts`
 - Shows visual banner when active (BlogPreviewBanner component)
 
 **RSS Feed Generation** (`buildEnd.ts`):
@@ -158,16 +160,16 @@ The blog uses a smart tag resolution system that maps tag slugs to proper displa
 2. **Standard tags** (`type: 'standard'`) - Link to `/standards/{slug}` (e.g., "datex-ii" → "DATEX II")
 3. **Blog-specific tags** (`type: 'blog-tag'`) - Link to `/blog?tag={slug}` (e.g., "technical" → "Technical")
 
-**Resolution Order** (`docs/.vitepress/theme/utils/tagResolver.ts`):
+**Resolution Order** (`docs/.vitepress/core/utils/tagResolver.ts`):
 1. Check if slug matches a category in `categories.yaml` (via `metadata/categories.ts`) → return category title and `/categories/{slug}` URL
 2. Check if slug matches a standard in `standards.data.ts` → return standard title and `/standards/{slug}` URL
 3. Check if slug exists in `data/blogTags.yaml` → return custom title and `/blog?tag={slug}` URL
 4. Fallback: use slug as-is for title and `/blog?tag={slug}` URL
 
 **Key Files:**
-- `docs/.vitepress/theme/utils/tagResolver.ts` - Core resolution logic, exports `resolveTag()` and `resolveTags()`
-- `docs/.vitepress/blogTags.ts` - Client-safe wrapper for blog tag metadata
-- `docs/.vitepress/blogTags.data.ts` - VitePress data loader for `blogTags.yaml`
+- `docs/.vitepress/core/utils/tagResolver.ts` - Core resolution logic, exports `resolveTag()` and `resolveTags()`
+- `docs/.vitepress/core/metadata/blogTags.ts` - Client-safe wrapper for blog tag metadata
+- `docs/.vitepress/core/data-loaders/blogTags.data.ts` - VitePress data loader for `blogTags.yaml`
 - `docs/data/blogTags.yaml` - YAML source for custom blog tag titles
 
 **Adding Custom Blog Tags:**
@@ -259,12 +261,18 @@ docs/
 │   │   ├── index.ts        # Theme customization
 │   │   ├── custom.css      # NAPCORE branding
 │   │   └── blog.css        # Blog-specific styles
-│   ├── sidebar.ts          # Sidebar configuration
-│   ├── tools.data.ts       # Tool interface & parser
-│   ├── stats.data.ts       # Statistics loader
-│   ├── blog.data.ts        # Blog post loader
-│   ├── buildEnd.ts         # RSS feed and OKF bundle generation
-│   └── toolValidation.ts   # Frontmatter validator
+│   ├── core/
+│   │   ├── config/         # sidebar.ts, site.ts
+│   │   ├── data-loaders/   # tools, stats, blog, categories, standards, blogTags
+│   │   ├── metadata/       # Client-safe wrappers over the loaders' data
+│   │   ├── validation/     # Frontmatter and YAML validators
+│   │   ├── okf/            # OKF bundle and zip writer
+│   │   ├── llms/           # llms.txt export
+│   │   └── utils/          # tagResolver, postVisibility, …
+│   ├── plugins/            # Markdown and dev server plugins
+│   ├── config.ts           # VitePress configuration
+│   └── buildEnd.ts         # RSS feed and OKF bundle generation
+├── data/                   # categories.yaml, standards.yaml, blogTags.yaml, publiccode registry
 ├── tools/                  # Tool documentation pages
 ├── categories/             # Category pages
 └── blog/                   # Blog
