@@ -137,6 +137,25 @@ Keep prose in British English (catalogue, organisation, standardised). Do not us
 `<style scoped>` inside Markdown; if you need custom styling, use a registered Vue
 component instead.
 
+### Collapsible sections
+
+Three directives fold long content away:
+
+```markdown
++++ chapter ## Installation {open}
+A collapsible section with a heading of any level. `{open}` opens it by default;
+`{#id}` and `{.class}` set an id and a CSS class.
++++
+
++++ collapse Show the full schema
+A collapsible block without a heading. The title defaults to "Click to expand".
++++
+
+::: details Section Title {.plain}
+VitePress's own `details` block, without the background and the border.
+:::
+```
+
 ---
 
 ## Full example
