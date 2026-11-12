@@ -22,6 +22,7 @@ import CategoriesFilter from './components/categories/CategoriesFilter.vue';
 import StandardsGrid from './components/standards/StandardsGrid.vue';
 import StandardsFilter from './components/standards/StandardsFilter.vue';
 import StandardInfo from './components/standards/StandardInfo.vue';
+import RelatedStandards from './components/standards/RelatedStandards.vue';
 import QuickInfo from './components/tools/ToolQuickInfo.vue';
 import ToolMetadata from './components/tools/ToolMetadata.vue';
 import ToolPubliccodeView from './components/tools/ToolPubliccodeView.vue';
@@ -63,6 +64,7 @@ export default {
     app.component('StandardsGrid', StandardsGrid);
     app.component('StandardsFilter', StandardsFilter);
     app.component('StandardInfo', StandardInfo);
+    app.component('RelatedStandards', RelatedStandards);
     app.component('QuickInfo', QuickInfo);
     app.component('ToolMetadata', ToolMetadata);
     app.component('ToolPubliccodeView', ToolPubliccodeView);

@@ -3,22 +3,13 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import standardsDataLoader from '../.vitepress/core/data-loaders/standards.data';
-import type { Standard } from '../.vitepress/core/data-loaders/standards.data';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-/**
- * Enhanced standard with computed related standards titles
- * Used in dynamic routes to pass resolved standard references
- */
-export interface EnhancedStandard extends Standard {
-  related_standards_with_titles?: Array<{ slug: string; title: string }>;
-}
 
 export default {
   /**
    * Generates dynamic paths for standard pages in VitePress.
-   * Creates routes for each standard with metadata including title and related standards.
+   * Creates routes for each standard with its title and its entry from standards.yaml.
    *
    * @returns Array of path objects with params for dynamic routing
    */
@@ -43,27 +34,12 @@ export default {
         const standard = standards[slug];
         const title = standard?.title || slug; // Fallback to slug if not found
 
-        // Enhance related standards with titles
-        let enhancedDetails: EnhancedStandard | undefined = standard;
-        if (standard && standard.related_standards) {
-          enhancedDetails = {
-            ...standard,
-            related_standards_with_titles: standard.related_standards.map((relatedSlug) => {
-              const relatedStandard = standards[relatedSlug];
-              return {
-                slug: relatedSlug,
-                title: relatedStandard?.title || relatedSlug,
-              };
-            }),
-          };
-        }
-
         return {
           params: {
             standard: slug,
             standardName: title,
             title: `Tools supporting ${title}`, // For transformPageData hook
-            details: enhancedDetails || null, // Pass details or null if not found
+            details: standard || null, // Pass details or null if not found
           },
         };
       });

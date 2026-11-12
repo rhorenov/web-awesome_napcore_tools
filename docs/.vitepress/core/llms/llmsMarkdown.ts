@@ -6,7 +6,7 @@
  *
  * - dynamic routes (registry tools, standards, generated categories) are Vue templates
  *   (`{{ $params.details.purpose }}`, `v-if`, `<ToolPubliccodeView />`) with no content
- * - hand-crafted pages use Vue components (`<ToolsFilter />`, `<RelatedCategories />`)
+ * - hand-crafted pages use Vue components (`<ToolsFilter />`, `<RelatedCategories />`, `<RelatedStandards />`)
  *   that render nothing as text, and tool pages rely on the Quick Info block that
  *   napCoreMarkdownPlugin injects at render time
  *
@@ -177,6 +177,7 @@ export function replaceComponents(body: string, section: string, slug: string, c
         return toolList(ctx.tools.filter((t) => wanted.includes(t.slug)));
       })
       .replace(/<RelatedCategories\s*\/>/g, () => categoryList(ctx.categories[slug]?.related ?? [], ctx))
+      .replace(/<RelatedStandards\s*\/>/g, () => standardList(ctx.standards[slug]?.related_standards ?? [], ctx))
       .replace(/<CategoriesFilter[^>]*\/>/g, () => categoryList(Object.keys(ctx.categories), ctx))
       .replace(/<StandardsFilter\s*\/>/g, () => standardList(Object.keys(ctx.standards), ctx))
       // Links bound through withBase(), used where a Markdown link would be rewritten to .html

@@ -85,6 +85,13 @@ describe('llmsMarkdown', () => {
     expect(out.content).not.toMatch(/document: category|<[A-Z]|\r/);
   });
 
+  it('replaces RelatedStandards on a hand-crafted standard page', () => {
+    const src = '# NeTEx\n\nProse.\n\n<RelatedStandards />\n';
+    const out = cleanLlmsPage(page('/standards/netex.md', src), ctx(['/standards/netex.md']));
+    expect(out.content).toContain('[SIRI](/standards/siri.md)');
+    expect(out.content).not.toContain('<RelatedStandards');
+  });
+
   it('turns a withBase() link into a Markdown link and drops the script that imports it', () => {
     const src =
       "<script setup>\nimport { withBase } from 'vitepress';\n</script>\n\n# About\n\n" +
