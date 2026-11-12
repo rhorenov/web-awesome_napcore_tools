@@ -2,11 +2,11 @@
 
 > Curated tools for European mobility data professionals
 
-A community-driven catalog of open-source tools that support European mobility data standards like DATEX II, NeTEx, SIRI, and mobilityDCAT-AP.
+A community-driven catalogue of open-source tools that support European mobility data standards like DATEX II, NeTEx, SIRI, and mobilityDCAT-AP.
 
 ## 🌐 Live Site
 
-Visit the catalog at:
+Visit the catalogue at:
 
 - Proof of Concept: <https://napcore-tools.github.io/web-awesome_napcore_tools/>
 - Finally (after approving version 1): [awesome.napcore.eu](https://awesome.napcore.eu/) (expected January/February 2026)
@@ -148,7 +148,7 @@ All tags are clickable and styled consistently throughout the blog.
 
 ## 📄 Document Types
 
-The Awesome NAPCORE Tools uses a custom markdown plugin (`napCoreMarkdownPlugin`) to automatically generate standardized content based on document type. This keeps content DRY (Don't Repeat Yourself) by defining metadata once in frontmatter.
+The Awesome NAPCORE Tools uses a custom markdown plugin (`napCoreMarkdownPlugin`) to automatically generate standardised content based on document type. This keeps content DRY (Don't Repeat Yourself) by defining metadata once in frontmatter.
 
 ### Tool Documents (`document: tool`)
 
@@ -187,7 +187,7 @@ Category pages are generated from `docs/data/categories.yaml` by the `docs/categ
 
 ### ToolMetadata Component
 
-The `<ToolMetadata />` component displays a formatted metadata box at the end of tool documentation pages, providing a standardized way to show tool information.
+The `<ToolMetadata />` component displays a formatted metadata box at the end of tool documentation pages, providing a standardised way to show tool information.
 
 **What it displays:**
 
@@ -318,7 +318,7 @@ Content that blends seamlessly with text flow.
 
 **Features:**
 
-- No background color or borders
+- No background colour or borders
 - Normal font weight (not bold)
 - Subtle hover effect
 - Blends naturally with surrounding text
@@ -409,17 +409,17 @@ See [contribute.md](./docs/contribute.md) for the full guide.
 
 ## 🎨 Design
 
-The catalog features:
+The catalogue features:
 
 - NAPCORE brand colors and official logo
 - Responsive, mobile-first design
 - Accessible (WCAG AA compliant)
-- Fast loading and SEO optimized
+- Fast loading and SEO optimised
 - Dark mode support
 
 ## 📖 Documentation
 
-- [About the Catalog](./docs/about.md)
+- [About the Catalogue](./docs/about.md)
 - [How to Contribute](./docs/contribute.md)
 - [Tool Categories](./docs/categories/index.md)
 - [All Tools](./docs/tools/index.md)
@@ -431,11 +431,11 @@ The catalog features:
 
 - **36 participants**: 33 Beneficiaries covering 26 EU Member States
 - **37 Implementing Bodies**
-- **Mission**: Harmonize mobility data standards across Europe
+- **Mission**: Harmonise mobility data standards across Europe
 
 Learn more at [napcore.eu](https://napcore.eu)
 
-## 📄 License
+## 📄 Licence
 
 - Code: MIT, see [LICENSE](LICENSE)
 - Catalogue content (pages, tool and standard descriptions, the OKF bundle): CC BY 4.0, see [LICENSE-CONTENT](LICENSE-CONTENT)
@@ -443,7 +443,7 @@ Learn more at [napcore.eu](https://napcore.eu)
 
 ## 🙏 Acknowledgments
 
-This catalog is made possible by:
+This catalogue is made possible by:
 
 - NAPCORE partners and participating member states
 - Tool developers who create and maintain these resources
