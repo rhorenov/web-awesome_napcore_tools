@@ -4,7 +4,7 @@
       v-for="standard in standards"
       :key="standard.slug"
       :href="withBase(`/standards/${standard.slug}`)"
-      class="category-card standard-card"
+      class="category-card"
     >
       <span class="category-badge">{{ standard.count }}</span>
       <img v-if="standard.logo" :src="withBase(standard.logo)" :alt="standard.name" class="standard-logo" />
@@ -76,7 +76,7 @@ const standards = computed(() => {
 </script>
 
 <style scoped>
-/* StandardsGrid uses the same card styling as CategoryGrid, with a subtle color accent */
+/* StandardsGrid uses the same card styling as CategoryGrid */
 
 /* Logo image stands in for the emoji icon; sized to match .category-icon (3rem) */
 .standard-logo {
@@ -86,22 +86,5 @@ const standards = computed(() => {
   max-width: 80%;
   margin: 0 auto 1rem;
   object-fit: contain;
-}
-
-.standard-card::before {
-  /* Use green accent for standards (vs blue for categories) */
-  /* background: linear-gradient(90deg, var(--napcore-green), var(--vp-c-brand-1)) !important; */
-}
-
-.standard-card .category-badge {
-  /* Green-tinted badge for standards */
-  /* background: var(--vp-c-green-soft);
-  color: var(--napcore-green);
-  font-weight: 700; */
-}
-
-.standard-card:hover {
-  /* Subtle green-tinted shadow on hover */
-  /* box-shadow: 0 8px 24px rgba(0, 166, 81, 0.12); */
 }
 </style>

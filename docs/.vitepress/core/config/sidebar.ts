@@ -94,23 +94,13 @@ function getStandardItemsWithCounts() {
       slug,
       title: standard?.title || slug, // Fallback to slug if not found
       count: counts[slug] || 0,
-      // We do not support endorsed standards anymore
-      endorsed: '',
     };
   });
 
-  // Sort standards: endorsed first, then alphabetically by title
-  standardsWithMetadata.sort((a, b) => {
-    // First, sort by endorsed status (endorsed items first)
-    if (a.endorsed && !b.endorsed) return -1;
-    if (!a.endorsed && b.endorsed) return 1;
+  standardsWithMetadata.sort((a, b) => a.title.localeCompare(b.title));
 
-    // If both have same endorsed status, sort alphabetically by title
-    return a.title.localeCompare(b.title);
-  });
-
-  return standardsWithMetadata.map(({ slug, title, count, endorsed }) => ({
-    text: `${endorsed} ${title} <span class="sidebar-badge">${count}</span>`,
+  return standardsWithMetadata.map(({ slug, title, count }) => ({
+    text: `${title} <span class="sidebar-badge">${count}</span>`,
     link: `/standards/${slug}`,
   }));
 }

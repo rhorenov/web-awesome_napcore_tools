@@ -21,7 +21,6 @@ const __dirname = path.dirname(__filename);
 export interface Standard {
   title: string; // Display name of the standard
   longTitle?: string; // Optional long/full title
-  endorsed?: boolean; // Whether the standard is endorsed
   icon: string; // Emoji icon, used as a fallback when no logo is set
   logo?: string; // Optional path to a logo image (e.g. /icons/standards/shacl.svg); takes precedence over icon
   description?: string; // Optional short description for UI

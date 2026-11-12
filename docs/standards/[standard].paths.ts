@@ -2,7 +2,6 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import toolsDataLoader from '../.vitepress/core/data-loaders/tools.data';
 import standardsDataLoader from '../.vitepress/core/data-loaders/standards.data';
 import type { Standard } from '../.vitepress/core/data-loaders/standards.data';
 
@@ -24,18 +23,6 @@ export default {
    * @returns Array of path objects with params for dynamic routing
    */
   paths() {
-    // Collect all unique standards (already slugified in tool frontmatter)
-    const standardSlugsSet = new Set<string>();
-    const tools = toolsDataLoader.load();
-
-    for (const tool of tools) {
-      if (tool.standards && tool.standards.length > 0) {
-        for (const standardSlug of tool.standards) {
-          standardSlugsSet.add(standardSlug);
-        }
-      }
-    }
-
     // Load standards data
     const standards = standardsDataLoader.load();
 
