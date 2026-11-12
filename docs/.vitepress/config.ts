@@ -11,7 +11,7 @@ import { buildEnd } from './buildEnd';
 import { siteUrl } from './core/config/site';
 import { splitDynamicPageIntoSections } from './core/search/dynamicPageSearch';
 import llmstxtPlugin from 'vitepress-plugin-llmstxt';
-import { type LlmsContext, cleanLlmsPage, loadLlmsContext, toUrlPath } from './core/llms/llmsMarkdown';
+import { type LlmsContext, cleanLlmsPage, hiddenBlogPosts, loadLlmsContext, toUrlPath } from './core/llms/llmsMarkdown';
 import { fileURLToPath, URL } from 'node:url';
 
 // Validate STANDARD_METADATA at config load time
@@ -25,6 +25,7 @@ handleValidationResult('CATEGORIES', categoriesValidationResult);
 // Use process.env to read the variable.
 // If the variable is not set, default to '/' (root path).
 const BASE_PATH = process.env.VITEPRESS_BASE || '/';
+const SRC_DIR = fileURLToPath(new URL('..', import.meta.url));
 
 // Site data for the llms.txt transform, loaded on first use
 let llmsContext: LlmsContext | undefined;
@@ -180,10 +181,12 @@ export default defineConfig({
       // Dev only: the build writes the OKF bundle in buildEnd
       okfDevPlugin(siteUrl),
       llmstxtPlugin({
+        // Drafts and scheduled posts, which the blog hides
+        ignore: hiddenBlogPosts(SRC_DIR),
         // Turn the plugin's raw page sources into plain Markdown (see core/llms/llmsMarkdown.ts)
         // and fix the backslashes path.join produces on Windows ("/\tools\motis.md").
         transform: ({ page, pages, vpConfig }) => {
-          llmsContext ??= loadLlmsContext(vpConfig?.srcDir ?? fileURLToPath(new URL('..', import.meta.url)));
+          llmsContext ??= loadLlmsContext(vpConfig?.srcDir ?? SRC_DIR);
           const ctx = llmsContext;
           const isPage = (p: { path: string }) => p.path.endsWith('.md');
 

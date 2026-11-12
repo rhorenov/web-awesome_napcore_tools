@@ -1,7 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import { afterEach, describe, expect, it } from 'vitest';
 import type { Tool } from '@/core/data-loaders/tools.data';
 import type { Standard } from '@/core/data-loaders/standards.data';
-import { type LlmsContext, type LlmsPage, cleanLlmsPage, toUrlPath } from '@/core/llms/llmsMarkdown';
+import { type LlmsContext, type LlmsPage, cleanLlmsPage, hiddenBlogPosts, toUrlPath } from '@/core/llms/llmsMarkdown';
 
 const tool = (slug: string, extra: Partial<Tool> = {}): Tool => ({
   slug,
@@ -110,5 +113,35 @@ describe('llmsMarkdown', () => {
     expect(out.content).toContain('- Endorsed by NAPCORE: Yes');
     expect(out.content).toContain('Body text.');
     expect(out.content).not.toContain('<ToolMetadata');
+  });
+});
+
+describe('hiddenBlogPosts', () => {
+  const dirs: string[] = [];
+  afterEach(() => dirs.splice(0).forEach((d) => fs.rmSync(d, { recursive: true, force: true })));
+
+  const srcDir = (posts: Record<string, string>): string => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llms-blog-'));
+    dirs.push(dir);
+    fs.mkdirSync(path.join(dir, 'blog', 'posts'), { recursive: true });
+    for (const [file, frontmatter] of Object.entries(posts)) {
+      // CRLF, as on a Windows checkout
+      fs.writeFileSync(path.join(dir, 'blog', 'posts', file), `---\r\n${frontmatter}\r\n---\r\n\r\n# Post\r\n`);
+    }
+    return dir;
+  };
+
+  it('lists drafts and scheduled posts as ignore globs', () => {
+    const dir = srcDir({
+      'public.md': 'title: Public\r\npublishDate: 2020-01-01',
+      'draft.md': 'title: Draft\r\npublished: false',
+      'scheduled.md': 'title: Later\r\npublishDate: 2099-12-01',
+      'plain.md': 'title: Plain',
+    });
+    expect(hiddenBlogPosts(dir).sort()).toEqual(['**/blog/posts/draft.md', '**/blog/posts/scheduled.md']);
+  });
+
+  it('returns nothing when there is no blog', () => {
+    expect(hiddenBlogPosts(os.tmpdir() + '/does-not-exist')).toEqual([]);
   });
 });

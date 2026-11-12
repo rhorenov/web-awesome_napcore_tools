@@ -16,9 +16,11 @@
 
 import fs from 'fs';
 import path from 'path';
+import { parse as parseYaml } from 'yaml';
 import categoriesDataLoader, { type CategoryData } from '../data-loaders/categories.data';
 import standardsDataLoader, { type Standard } from '../data-loaders/standards.data';
 import toolsDataLoader, { type Tool } from '../data-loaders/tools.data';
+import { type PostVisibility, isPostVisible } from '../utils/postVisibility';
 
 /** The page shape the plugin passes to its `transform` hook. */
 export interface LlmsPage {
@@ -54,6 +56,27 @@ export function toUrlPath(s: string): string {
 }
 
 const FRONTMATTER = /^---\n[\s\S]*?\n---\n*/;
+const FRONTMATTER_YAML = /^---\n([\s\S]*?)\n---/;
+
+/**
+ * Blog posts the blog does not show (drafts, and scheduled posts outside preview mode),
+ * as `ignore` globs for the plugin, so they stay out of llms.txt and llms-full.txt.
+ * The `**` prefix is needed because the globs are matched against absolute paths.
+ */
+export function hiddenBlogPosts(srcDir: string): string[] {
+  const dir = path.join(srcDir, 'blog', 'posts');
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((file) => file.endsWith('.md'))
+    .filter((file) => {
+      const source = fs.readFileSync(path.join(dir, file), 'utf-8').replace(/\r\n/g, '\n');
+      const yaml = FRONTMATTER_YAML.exec(source)?.[1];
+      const frontmatter = ((yaml && parseYaml(yaml)) ?? {}) as PostVisibility;
+      return !isPostVisible(frontmatter);
+    })
+    .map((file) => `**/blog/posts/${file}`);
+}
 
 function llmsLink(section: string, slug: string): string {
   return `/${section}/${slug}.md`;
