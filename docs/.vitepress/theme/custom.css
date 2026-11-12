@@ -365,40 +365,41 @@ a.title > span {
   padding: 0.5rem 2.5rem;
 }
 
-/* Get Involved cards */
-.hp-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  margin: 1rem 0;
+/* Get Involved cards: the hero's VPFeatures, placed inside a panel. The panel
+   already has padding, and the markdown (.vp-doc) styles for headings,
+   paragraphs and links must not reach the cards */
+.hp-features.VPFeatures {
+  padding: 0;
 }
 
-.hp-card {
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-left: 4px solid var(--vp-c-brand-1);
-  border-radius: 8px;
-  padding: 1.75rem;
-  transition:
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+/* The panel is grey already, so the cards take the page background */
+.vp-doc .hp-features .VPFeature {
+  background-color: var(--vp-c-bg);
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
 }
 
-.hp-card h3 {
-  margin-top: 0;
+.vp-doc .hp-features .VPFeature .title {
+  margin: 0;
+  padding: 0;
+  border-top: none;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: normal;
 }
 
-.hp-card:hover {
-  box-shadow: 0 4px 16px var(--napcore-shadow);
-  transform: translateY(-2px);
+.vp-doc .hp-features .VPFeature p {
+  margin: 0;
 }
 
-.hp-card--green {
-  border-left-color: var(--napcore-green);
+.vp-doc .hp-features .VPFeature .details {
+  line-height: 24px;
 }
 
-.hp-card--orange {
-  border-left-color: var(--napcore-orange);
+.vp-doc .hp-features .VPFeature .link-text-value {
+  line-height: 24px;
 }
 
 .VPHomeContent {

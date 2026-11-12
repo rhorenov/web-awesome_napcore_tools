@@ -44,7 +44,41 @@ features:
     title: Community Provided
     details: Community provided tools enlisted too.
     link: /contribute
+
+# Cards of the Get Involved section, in the same shape as `features`
+involved:
+  - icon:
+      src: /icons/submit-tool.svg
+      alt: Page with a plus sign representing a new tool
+      width: "48"
+      height: "48"
+    title: Submit a Tool
+    details: Have a tool that helps with mobility data? Submit it for review by the NAPCORE team.
+    link: /contribute
+    linkText: Learn how to contribute
+  - icon:
+      src: /icons/discussion.svg
+      alt: Speech bubbles representing a discussion
+      width: "48"
+      height: "48"
+    title: Join the Discussion
+    details: Ask questions and share your experience with other mobility data professionals.
+    link: https://github.com/napcore-tools/web-awesome_napcore_tools/discussions
+    linkText: GitHub Discussions
+  - icon:
+      src: /icons/blog.svg
+      alt: Newspaper representing the blog
+      width: "48"
+      height: "48"
+    title: Read the Blog
+    details: News, technical articles and updates from the NAPCORE team.
+    link: /blog/
+    linkText: Go to the blog
 ---
+
+<script setup>
+import { VPFeatures } from 'vitepress/theme';
+</script>
 
 <div class="hp-sections">
 
@@ -80,39 +114,7 @@ Tools developed directly by the NAPCORE team
 
 </div>
 
-<div class="hp-cards">
-
-<div class="hp-card">
-
-### 🎯 Submit a Tool
-
-Have a tool that helps with mobility data? Submit it for review by the NAPCORE team through our contribution process.
-
-[Learn How to Contribute →](/contribute)
-
-</div>
-
-<div class="hp-card hp-card--green">
-
-### 💬 Join the Discussion
-
-Connect with other mobility data professionals, ask questions, and share your experiences with the community.
-
-[GitHub Discussions →](https://github.com/napcore-tools/web-awesome_napcore_tools/discussions)
-
-</div>
-
-<div class="hp-card hp-card--orange">
-
-### 📰 Read the Blog
-
-Stay up to date with news, technical articles, and updates from the NAPCORE team.
-
-[Go to Blog →](/blog/)
-
-</div>
-
-</div>
+<VPFeatures class="hp-features" :features="$frontmatter.involved" />
 
 </div>
 

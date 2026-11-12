@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- Page with a folded corner, matching the padlock body style -->
+  <path d="M12 4h17l9 9v27a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z"
+    fill="rgba(0,102,204,0.12)" stroke="#0066cc" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M29 4v9h9" stroke="#0066cc" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Plus sign: a new entry -->
+  <line x1="23" y1="20" x2="23" y2="34" stroke="#0066cc" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="16" y1="27" x2="30" y2="27" stroke="#0066cc" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
