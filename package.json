@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Awesome NAPCORE - Curated tools for European mobility data professionals",
   "type": "module",
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0"
+  },
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
