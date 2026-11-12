@@ -23,7 +23,7 @@ converters:
 version-tools:
   title: Version Upgrade Tools
   icon: ⬆
-  description: Migration and compatibility utilities
+  description: Tools that migrate data or systems from one version of a standard to another
   related:
     - converters
     - validators
@@ -56,7 +56,7 @@ reference-implementations:
 development:
   title: Development Tools
   icon: 🛠
-  description: Browsers, editors, and generators
+  description: Schema and model browsers, editors and generators for working with the standards
   related:
     - sdks
     - validators
@@ -67,7 +67,7 @@ development:
 data-quality:
   title: Data Quality Tools
   icon: 📊
-  description: Validation, enrichment, and cleaning
+  description: Tools that measure, monitor and improve data quality beyond schema validation
   related:
     - validators
     - metadata
@@ -78,7 +78,7 @@ data-quality:
 testing:
   title: Testing Utilities
   icon: 🧪
-  description: Test data generation and validation
+  description: Test data generators, simulators and tools for testing feeds and services
   related:
     - validators
     - data-quality
@@ -89,7 +89,7 @@ testing:
 metadata:
   title: Metadata Tools
   icon: 🏷
-  description: Catalog generation and discovery
+  description: Tools for creating, validating and publishing dataset metadata such as mobilityDCAT-AP
   related:
     - data-quality
     - validators
@@ -131,7 +131,7 @@ data-aggregators:
     - metadata
 
 references:
-  title: Reference Documentations
+  title: Reference Documentation
   icon: 📚
   description: Technical documentation, specifications, and implementation guides for mobility data standards and systems
   related:

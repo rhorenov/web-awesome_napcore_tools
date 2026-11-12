@@ -181,35 +181,7 @@ The QuickInfo component automatically displays all tool metadata from frontmatte
 
 ### Category Documents (`document: category`)
 
-Category pages automatically get a footer with contribution tip section.
-
-**Frontmatter example:**
-
-```yaml
----
-document: category
-contributeTip: Know a validator for DATEX II, NeTEx, SIRI, or mobilityDCAT-AP?
----
-```
-
-**Auto-generated content:**
-
-```markdown
----
-
-::: tip Want to Contribute?
-
-Know a validator for DATEX II, NeTEx, SIRI, or mobilityDCAT-AP?
-[Submit your tool →](/contribute)
-:::
-```
-
-**Benefits:**
-
-- **Single source of truth**: Tip text lives only in frontmatter
-- **Consistency**: All category pages have uniform contribution CTAs
-- **Easy updates**: Change tip text in frontmatter, not in markdown body
-- **Maintainability**: Plugin handles formatting and structure
+Category pages are generated from `docs/data/categories.yaml` by the `docs/categories/[category].md` template. The plugin adds a separator after the tool list.
 
 **Location**: Plugin implementation in `docs/.vitepress/plugins/napCoreMarkdownPlugin.ts`
 
@@ -392,8 +364,8 @@ web-awesome_napcore_tools/
 │   ├── index.md               # Homepage
 │   ├── tools/                 # Tool documentation pages
 │   │   └── *.md               # Individual tool pages
-│   ├── categories/            # Category pages (validators, converters, etc.)
-│   │   └── *.md
+│   ├── categories/            # Category pages, generated from data/categories.yaml
+│   │   └── [category].md      # Page template
 │   ├── blog/                  # Blog
 │   │   ├── index.md           # Blog listing page
 │   │   └── posts/             # Blog post files
