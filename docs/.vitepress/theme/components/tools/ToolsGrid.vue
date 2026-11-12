@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { useRoute } from 'vitepress';
+import { useRoute, withBase } from 'vitepress';
 import { data as tools } from '@/core/data-loaders/tools.data';
 import type { Tool } from '@/core/data-loaders/tools.data';
 import { createSlug, getSubtitle, toolMatchesSearch } from '@/core/utils';
@@ -246,7 +246,7 @@ const emptyStateMessage = computed(() => {
   if (hasActiveFilters.value) {
     return 'No tools match your current filters. Try adjusting your search or filters.';
   }
-  return 'No tools available in this category yet. <a href="/contribute">Contribute a tool →</a>';
+  return `No tools available in this category yet. <a href="${withBase('/contribute')}">Contribute a tool →</a>`;
 });
 </script>
 
