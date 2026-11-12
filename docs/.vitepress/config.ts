@@ -11,7 +11,13 @@ import { buildEnd } from './buildEnd';
 import { siteUrl, withBasePath } from './core/config/site';
 import { splitDynamicPageIntoSections } from './core/search/dynamicPageSearch';
 import llmstxtPlugin from 'vitepress-plugin-llmstxt';
-import { type LlmsContext, cleanLlmsPage, hiddenBlogPosts, loadLlmsContext, toUrlPath } from './core/llms/llmsMarkdown';
+import {
+  type LlmsContext,
+  cleanLlmsPage,
+  fixIndexLinks,
+  hiddenBlogPosts,
+  loadLlmsContext,
+} from './core/llms/llmsMarkdown';
 import { fileURLToPath, URL } from 'node:url';
 
 // Validate STANDARD_METADATA at config load time
@@ -201,23 +207,24 @@ export default defineConfig({
       llmstxtPlugin({
         // Drafts and scheduled posts, which the blog hides
         ignore: hiddenBlogPosts(SRC_DIR),
-        // Turn the plugin's raw page sources into plain Markdown (see core/llms/llmsMarkdown.ts)
-        // and fix the backslashes path.join produces on Windows ("/\tools\motis.md").
+        // Turn the plugin's raw page sources into plain Markdown (see core/llms/llmsMarkdown.ts),
+        // fix the backslashes path.join produces on Windows ("/\tools\motis.md") and add the base.
         transform: ({ page, pages, vpConfig }) => {
-          llmsContext ??= loadLlmsContext(vpConfig?.srcDir ?? SRC_DIR);
+          llmsContext ??= loadLlmsContext(vpConfig?.srcDir ?? SRC_DIR, BASE_PATH);
           const ctx = llmsContext;
           const isPage = (p: { path: string }) => p.path.endsWith('.md');
 
-          if (isPage(page)) return cleanLlmsPage(page, ctx);
-          if (page.path === '/llms-full.txt') {
+          if (isPage(page)) {
+            page = cleanLlmsPage(page, ctx);
+          } else if (page.path === '/llms-full.txt') {
             // Built by the plugin before transform runs, so rebuild it from the cleaned pages
             page.content = pages
               .filter(isPage)
               .map((p) => cleanLlmsPage(p, ctx).content)
               .join('\n\n');
+          } else {
+            page.content = fixIndexLinks(page.content, ctx.base);
           }
-          // Link targets in llms.txt
-          page.content = page.content.replace(/\]\(([^)]*)\)/g, (_m, url: string) => `](${toUrlPath(url)})`);
           return page;
         },
       }),

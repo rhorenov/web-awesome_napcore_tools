@@ -4,7 +4,14 @@ import path from 'path';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { Tool } from '@/core/data-loaders/tools.data';
 import type { Standard } from '@/core/data-loaders/standards.data';
-import { type LlmsContext, type LlmsPage, cleanLlmsPage, hiddenBlogPosts, toUrlPath } from '@/core/llms/llmsMarkdown';
+import {
+  type LlmsContext,
+  type LlmsPage,
+  cleanLlmsPage,
+  fixIndexLinks,
+  hiddenBlogPosts,
+  toUrlPath,
+} from '@/core/llms/llmsMarkdown';
 
 const tool = (slug: string, extra: Partial<Tool> = {}): Tool => ({
   slug,
@@ -16,7 +23,7 @@ const tool = (slug: string, extra: Partial<Tool> = {}): Tool => ({
   ...extra,
 });
 
-const ctx = (handCrafted: string[] = []): LlmsContext => ({
+const ctx = (handCrafted: string[] = [], base = '/'): LlmsContext => ({
   tools: [
     tool('antu', { longDescription: 'Long text', features: ['Validates NeTEx'], license: 'EUPL-1.2' }),
     tool('motis', { categories: ['converters'], standards: [], endorsed: true }),
@@ -35,6 +42,7 @@ const ctx = (handCrafted: string[] = []): LlmsContext => ({
     converters: { title: 'Converters', icon: '', description: 'Convert data' },
   },
   hasSourceFile: (p) => handCrafted.includes(p),
+  base,
 });
 
 const page = (path: string, body: string, frontmatter: Record<string, unknown> = {}): LlmsPage => ({
@@ -113,6 +121,25 @@ describe('llmsMarkdown', () => {
     expect(out.content).toContain('- Endorsed by NAPCORE: Yes');
     expect(out.content).toContain('Body text.');
     expect(out.content).not.toContain('<ToolMetadata');
+  });
+
+  it('adds the site base to links and to the URL fields', () => {
+    const src = '# About\n\nSee [MOTIS](/tools/motis) and [the spec](https://example.org/spec).\n';
+    const out = cleanLlmsPage(page('/about.md', src), ctx(['/about.md'], '/sub/'));
+    expect(out.content).toContain('LLMS_URL: "/sub/about.md"');
+    expect(out.content).toContain('[MOTIS](/sub/tools/motis)');
+    expect(out.content).toContain('[the spec](https://example.org/spec)');
+    expect(out.llmUrl).toBe('/sub/about.md');
+  });
+
+  it('adds the site base to generated links', () => {
+    const out = cleanLlmsPage(page('/categories/validators.md', ''), ctx([], '/sub/'));
+    expect(out.content).toContain('[ANTU](/sub/tools/antu.md)');
+  });
+
+  it('fixes slashes and adds the base in llms.txt links', () => {
+    expect(fixIndexLinks('- [MOTIS](/\\tools\\motis.md)', '/sub/')).toBe('- [MOTIS](/sub/tools/motis.md)');
+    expect(fixIndexLinks('- [MOTIS](/tools/motis.md)', '/')).toBe('- [MOTIS](/tools/motis.md)');
   });
 });
 

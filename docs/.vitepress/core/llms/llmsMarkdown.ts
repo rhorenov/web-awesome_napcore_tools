@@ -17,6 +17,7 @@
 import fs from 'fs';
 import path from 'path';
 import { parse as parseYaml } from 'yaml';
+import { withBasePath } from '../config/site';
 import categoriesDataLoader, { type CategoryData } from '../data-loaders/categories.data';
 import standardsDataLoader, { type Standard } from '../data-loaders/standards.data';
 import toolsDataLoader, { type Tool } from '../data-loaders/tools.data';
@@ -39,14 +40,17 @@ export interface LlmsContext {
   categories: Record<string, CategoryData>;
   /** True when the page has a Markdown file on disk (false for dynamic routes). */
   hasSourceFile: (pagePath: string) => boolean;
+  /** Site base path ("/" or "/sub/"); the plugin writes links without it. */
+  base: string;
 }
 
-export function loadLlmsContext(srcDir: string): LlmsContext {
+export function loadLlmsContext(srcDir: string, base: string): LlmsContext {
   return {
     tools: toolsDataLoader.load(),
     standards: standardsDataLoader.load(),
     categories: categoriesDataLoader.load(),
     hasSourceFile: (pagePath) => fs.existsSync(path.join(srcDir, pagePath)),
+    base,
   };
 }
 
@@ -76,6 +80,11 @@ export function hiddenBlogPosts(srcDir: string): string[] {
       return !isPostVisible(frontmatter);
     })
     .map((file) => `**/blog/posts/${file}`);
+}
+
+/** Fixes the link targets in llms.txt: URL slashes and the site base. */
+export function fixIndexLinks(content: string, base: string): string {
+  return content.replace(/\]\(([^)]*)\)/g, (_m, url: string) => `](${withBasePath(toUrlPath(url), base)})`);
 }
 
 function llmsLink(section: string, slug: string): string {
@@ -248,7 +257,14 @@ export function cleanLlmsPage(page: LlmsPage, ctx: LlmsContext): LlmsPage {
     body = replaceComponents(body, section ?? '', slug ?? '', ctx);
   }
 
-  body = body.replace(/\n{3,}/g, '\n\n').trim() + '\n';
-  const fixedHead = head.replace(/^LLMS_URL: "(.*)"$/m, (_m, url: string) => `LLMS_URL: "${toUrlPath(url)}"`);
-  return { ...page, path: pagePath, llmUrl: toUrlPath(page.llmUrl), content: fixedHead + body };
+  const link = (url: string) => withBasePath(toUrlPath(url), ctx.base);
+  body = body
+    .replace(/\]\((\/[^)\s]*)\)/g, (_m, url: string) => `](${link(url)})`)
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  const fixedHead = head.replace(
+    /^(URL|LLMS_URL): "(.*)"$/gm,
+    (_m, key: string, url: string) => `${key}: "${link(url)}"`
+  );
+  return { ...page, path: pagePath, url: link(page.url), llmUrl: link(page.llmUrl), content: `${fixedHead}${body}\n` };
 }
