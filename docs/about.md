@@ -33,7 +33,26 @@ The whole catalogue is also published as an [OKF](https://github.com/GoogleCloud
 
 Every tool, standard and category is one Markdown file, with its fields in YAML frontmatter and links to the entries it relates to. People and AI agents read the same file.
 
-For AI assistants the site also publishes [llms.txt](/llms.txt), an index that links to a Markdown copy of every page, and [llms-full.txt](/llms-full.txt), all pages in one file.
+## Using the Catalogue with AI {#ai}
+
+The catalogue is published in three machine-readable forms. Pick the one that suits your tool:
+
+| You use                                  | Give it                                                                            |
+| ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| A chat assistant that can open web links | the link to [llms-full.txt](/llms-full.txt), the whole catalogue in one file       |
+| A chat assistant without web access      | llms-full.txt, downloaded and uploaded as a file                                   |
+| An AI agent that browses                 | [llms.txt](/llms.txt), an index that links to a Markdown copy of every page        |
+| A knowledge base or an agent of your own | the [OKF bundle](/napcore-tools-okf.zip), one file per tool, standard and category |
+
+Example prompts:
+
+- Read https://awesome.napcore.eu/llms-full.txt. Which open-source tools validate NeTEx files, and under which licences?
+- Using https://awesome.napcore.eu/llms-full.txt, which tools work with DATEX II, and what does each one do?
+- We run a National Access Point publishing GTFS and NeTEx. Based on https://awesome.napcore.eu/llms-full.txt, which tools could check our data before we publish it?
+- Using https://awesome.napcore.eu/llms-full.txt, list the tools made by NAPCORE, one sentence each.
+- Here is my project: _repository URL_. Following https://awesome.napcore.eu/contribute.md, draft a catalogue entry for it.
+
+The files are rebuilt with every site update. Check the tool's own page before you rely on an answer.
 
 ## Keyboard Shortcuts {#keyboard-shortcuts}
 
