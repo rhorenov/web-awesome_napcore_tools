@@ -6,6 +6,7 @@ import { createContentLoader } from 'vitepress';
 import { siteUrl } from './core/config/site';
 import { OKF_ARCHIVE, okfBundle } from './core/okf/okfBundle';
 import { zipArchive } from './core/okf/zipArchive';
+import { isPostVisible } from './core/utils/postVisibility';
 
 const blogUrl = `${siteUrl}/blog`;
 
@@ -39,19 +40,11 @@ export const buildEnd = async (config: SiteConfig): Promise<void> => {
   posts.sort((a, b) => +new Date(b.frontmatter.date as string) - +new Date(a.frontmatter.date as string));
 
   // Add posts to feed
-  const now = Date.now();
-  const isPreviewMode = typeof process.env.VITE_PREVIEW_MODE !== 'undefined';
   let publishedCount = 0;
 
   for (const { url, excerpt, frontmatter, html } of posts) {
-    // Skip draft posts
-    if (frontmatter.published === false) continue;
-
-    // In preview mode, include all posts regardless of publishDate
-    if (!isPreviewMode && frontmatter.publishDate) {
-      const publishTime = new Date(frontmatter.publishDate as string).getTime();
-      if (publishTime > now) continue;
-    }
+    // Skip drafts and, outside preview mode, scheduled posts
+    if (!isPostVisible(frontmatter)) continue;
 
     feed.addItem({
       title: frontmatter.title,

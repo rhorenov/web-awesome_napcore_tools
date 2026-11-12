@@ -1,4 +1,5 @@
 import { createContentLoader } from 'vitepress';
+import { isPostVisible } from '../utils/postVisibility';
 
 export interface BlogPost {
   title: string;
@@ -29,9 +30,6 @@ export default createContentLoader('blog/posts/*.md', {
    * @returns Array of validated and filtered BlogPost objects, sorted by date descending
    */
   transform(raw): BlogPost[] {
-    const now = Date.now();
-    const isPreviewMode = typeof process.env.VITE_PREVIEW_MODE !== 'undefined';
-
     return raw
       .map(({ url, frontmatter, excerpt }) => ({
         title: frontmatter.title,
@@ -44,21 +42,7 @@ export default createContentLoader('blog/posts/*.md', {
         published: frontmatter.published !== false,
         publishDate: frontmatter.publishDate,
       }))
-      .filter((post) => {
-        // Filter out unpublished posts
-        if (!post.published) return false;
-
-        // In preview mode, show all posts regardless of publishDate
-        if (isPreviewMode) return true;
-
-        // Filter out posts with future publishDate
-        if (post.publishDate) {
-          const publishTime = new Date(post.publishDate).getTime();
-          if (publishTime > now) return false;
-        }
-
-        return true;
-      })
+      .filter((post) => isPostVisible(post))
       .sort((a, b) => b.date.time - a.date.time);
   },
 });
