@@ -8,7 +8,7 @@ import { validateAllStandards } from './core/validation/standards';
 import { validateAllCategories } from './core/validation/categories';
 import { handleValidationResult } from './core/validation/utils';
 import { buildEnd } from './buildEnd';
-import { siteUrl } from './core/config/site';
+import { siteUrl, withBasePath } from './core/config/site';
 import { splitDynamicPageIntoSections } from './core/search/dynamicPageSearch';
 import llmstxtPlugin from 'vitepress-plugin-llmstxt';
 import { type LlmsContext, cleanLlmsPage, hiddenBlogPosts, loadLlmsContext, toUrlPath } from './core/llms/llmsMarkdown';
@@ -25,6 +25,8 @@ handleValidationResult('CATEGORIES', categoriesValidationResult);
 // Use process.env to read the variable.
 // If the variable is not set, default to '/' (root path).
 const BASE_PATH = process.env.VITEPRESS_BASE || '/';
+// VitePress does not add the base to `head` tags or social links
+const withBase = (url: string) => withBasePath(url, BASE_PATH);
 const SRC_DIR = fileURLToPath(new URL('..', import.meta.url));
 
 // Site data for the llms.txt transform, loaded on first use
@@ -37,12 +39,28 @@ export default defineConfig({
   base: BASE_PATH,
 
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
-    ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'Awesome NAPCORE Blog Feed', href: '/feed.rss' }],
-    ['link', { rel: 'alternate', type: 'text/markdown', title: 'LLM-friendly documentation', href: '/llms.txt' }],
+    ['link', { rel: 'icon', type: 'image/png', href: withBase('/favicon.png') }],
     [
       'link',
-      { rel: 'alternate', type: 'text/markdown', title: 'Complete LLM-friendly documentation', href: '/llms-full.txt' },
+      {
+        rel: 'alternate',
+        type: 'application/rss+xml',
+        title: 'Awesome NAPCORE Blog Feed',
+        href: withBase('/feed.rss'),
+      },
+    ],
+    [
+      'link',
+      { rel: 'alternate', type: 'text/markdown', title: 'LLM-friendly documentation', href: withBase('/llms.txt') },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        type: 'text/markdown',
+        title: 'Complete LLM-friendly documentation',
+        href: withBase('/llms-full.txt'),
+      },
     ],
     ['meta', { name: 'theme-color', content: '#ffcb01' }],
     ['meta', { property: 'og:type', content: 'website' }],
@@ -116,7 +134,7 @@ export default defineConfig({
         },
         link: 'https://github.com/napcore-tools/web-awesome_napcore_tools/discussions',
       },
-      { icon: 'rss', link: '/feed.rss' },
+      { icon: 'rss', link: withBase('/feed.rss') },
     ],
 
     footer: {
