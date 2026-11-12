@@ -226,7 +226,7 @@ categories:
   - data-quality
 standards:
   - datex-ii
-  - isodis-14819
+  - rds-tmc
 license: MIT
 language: Python
 type: CLI Tool

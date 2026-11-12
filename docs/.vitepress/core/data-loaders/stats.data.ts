@@ -1,6 +1,7 @@
 // Data loader for stats - all calculations are now fully dynamic from tools data
 import toolsDataLoader from './tools.data';
 import categoriesDataLoader from './categories.data';
+import standardsDataLoader from './standards.data';
 
 export default {
   // Watch tool files for dynamic calculations
@@ -51,16 +52,10 @@ export default {
     // Count how many categories have at least one tool
     categoryStats.withTools = categorySlugs.filter((slug) => categoryStats[slug] > 0).length;
 
-    // Calculate standards statistics - count unique standards used by tools
-    const uniqueStandards = new Set<string>();
-    tools.forEach((tool) => {
-      if (tool.standards && tool.standards.length > 0) {
-        tool.standards.forEach((std: string) => uniqueStandards.add(std));
-      }
-    });
-
+    // Count the standards in standards.yaml, the same set the standards grid,
+    // the sidebar and the OKF bundle list (a standard may have no tool yet)
     const standardsStats = {
-      total: uniqueStandards.size,
+      total: Object.keys(standardsDataLoader.load()).length,
     };
 
     // Return combined statistics (all calculated dynamically)

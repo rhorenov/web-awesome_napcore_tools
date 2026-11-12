@@ -1,18 +1,18 @@
 datex-ii:
   title: DATEX II
-  longTitle: European Standard for Traffic and Travel Information Exchange - CEN/TS 16157
+  longTitle: DATEX II data exchange specifications for traffic management and information
   icon: 🚦
   logo: /icons/standards/datex-ii.png
   description: European standard for traffic and travel information exchange
   domain: Road traffic and travel information
   purpose: Standard for exchanging road and traffic data such as incidents, roadworks, and traffic status between road authorities and service providers.
-  format_technology: XML, UML, RDF (via DATEX II RDF profile)
-  maintainer_origin: CEN (EN 16157)
+  format_technology: UML, XML, JSON, RDF (via DATEX II RDF profile)
+  maintainer_origin: CEN (EN 16157, newer parts CEN/TS 16157)
   related_standards:
-    - isodis-14819
+    - rds-tmc
     - mobilitydcat-ap
     - rdf
-  status: EU standard (CEN)
+  status: European Standard (CEN), newer parts Technical Specifications
   link: https://docs.datex2.eu/
 
 netex:
@@ -22,15 +22,15 @@ netex:
   logo: /icons/standards/transmodel.png
   description: Network Timetable Exchange - public transport network data
   domain: Public transport (scheduled data)
-  purpose: Data exchange standard for sharing public transport schedules, routes, stops, and fare information, based on the TransModel conceptual model.
-  format_technology: XML (CEN schema)
-  maintainer_origin: CEN (EN 16614)
+  purpose: Data exchange standard for sharing public transport schedules, routes, stops, and fare information, based on the Transmodel conceptual model.
+  format_technology: XML (W3C XML Schema)
+  maintainer_origin: CEN (CEN/TS 16614)
   related_standards:
     - transmodel
     - siri
     - mobilitydcat-ap
-  status: EU standard (CEN)
-  link: https://transmodel-cen.eu/
+  status: CEN Technical Specification
+  link: https://transmodel-cen.eu/index.php/netex/
 
 siri:
   title: SIRI
@@ -40,78 +40,63 @@ siri:
   description: Service Interface for Real-time Information - live transit data
   domain: Public transport (real-time information)
   purpose: Defines interfaces for exchanging live operational data like vehicle positions, departures, and service alerts between systems.
-  format_technology: XML (SOAP-based web services)
-  maintainer_origin: CEN (EN 15531)
+  format_technology: XML, JSON
+  maintainer_origin: CEN (EN 15531, parts 4 to 7 CEN/TS 15531)
   related_standards:
     - transmodel
     - netex
-  status: EU standard (CEN)
-  link: https://transmodel-cen.eu/
+  status: European Standard (CEN), later parts Technical Specifications
+  link: https://transmodel-cen.eu/index.php/siri/
 
 mobilitydcat-ap:
   title: mobilityDCAT-AP
-  longTitle: Mobility Data Catalog Application Profile
+  longTitle: A mobility extension for the DCAT application profile for data portals in Europe
   icon: 🏷️
   logo: /icons/standards/mobilitydcat-ap.png
-  description: Mobility Data Catalog Application Profile - metadata standard
+  description: Mobility extension of DCAT-AP - metadata for mobility data portals
   domain: Transport and mobility data catalogues
-  purpose: Profile of DCAT-AP tailored for describing datasets and APIs in National Access Points (NAPs) for mobility data.
+  purpose: Extension of DCAT-AP tailored for describing datasets and APIs in National Access Points (NAPs) for mobility data.
   format_technology: RDF, DCAT vocabulary
-  maintainer_origin: European Commission / EU ITS Directive framework
+  maintainer_origin: NAPCORE (Task 4.4, Metadata Working Group)
   related_standards:
     - dcat-ap
     - datex-ii
     - netex
     - gtfs
     - shacl
-  status: EU specification (ITS Directive)
+  status: NAPCORE Recommendation
   link: https://w3id.org/mobilitydcat-ap/
 
 dcat-ap:
   title: DCAT-AP
-  longTitle: Data Catalog Vocabulary Application Profile for Europe
+  longTitle: DCAT Application Profile for data portals in Europe
   icon: 📋
   logo: /icons/standards/dcat-ap.png
   description: Data Catalog Application Profile - EU open data metadata
   domain: Open data and metadata cataloguing
   purpose: Common model for describing datasets, APIs, and catalogues to enable interoperability among European open data portals.
   format_technology: RDF, W3C DCAT vocabulary
-  maintainer_origin: European Commission / W3C
+  maintainer_origin: European Commission (SEMIC)
   related_standards:
     - mobilitydcat-ap
     - rdf
     - shacl
-  status: EU profile of W3C standard
+  status: EU application profile of the W3C DCAT vocabulary
   link: https://op.europa.eu/en/web/eu-vocabularies/dcat-ap
 
-isodis-14819:
-  title: ISO/DIS 14819
-  longTitle: Intelligent transport systems — Traffic and travel information messages via traffic message coding
-  icon: 📍
-  logo: /icons/standards/tmc.svg
-  description: ALERT-C location referencing standard
-  domain: Road traffic and navigation systems
-  purpose: Defines the RDS-TMC message sets for broadcasting traffic and travel information to in-vehicle systems.
-  format_technology: Binary (RDS-TMC), XML/JSON (TPEG extensions)
-  maintainer_origin: ISO/TC 204
-  related_standards:
-    - rds-tmc
-  status: ISO standard (global)
-  link: https://www.iso.org/standard/76781.html
-
 rds-tmc:
-  title: RDS-TMC
+  title: RDS-TMC (ISO 14819)
   longTitle: Radio Data System – Traffic Message Channel
   icon: 📻
   logo: /icons/standards/tmc.svg
-  description: Radio Data System - Traffic Message Channel
+  description: Traffic messages over FM radio, coded with ALERT-C
   domain: Road traffic information broadcasting
-  purpose: Encodes traffic messages into FM radio broadcasts to deliver real-time traffic updates to navigation systems.
+  purpose: Encodes traffic messages into FM radio broadcasts to deliver real-time traffic updates to navigation systems. ISO 14819 defines the ALERT-C coding protocol, the event list, and the location referencing.
   format_technology: Binary over FM RDS
-  maintainer_origin: ISO / CEN / broadcasters
+  maintainer_origin: ISO/TC 204
   related_standards:
-    - isodis-14819
-  status: Mature ISO/CEN standard
+    - datex-ii
+  status: ISO standard, adopted in Europe as EN ISO 14819
   link: https://www.iso.org/standard/76781.html
 
 gtfs:
@@ -132,7 +117,7 @@ gtfs:
 
 gtfs-realtime:
   title: GTFS Realtime
-  longTitle: Real-time transit updates extension for GTFS
+  longTitle: General Transit Feed Specification Realtime
   icon: ⚡
   logo: /icons/standards/gtfs.png
   description: Real-time transit updates extension for GTFS
@@ -162,7 +147,7 @@ gbfs:
   link: https://gbfs.org/
 
 transmodel:
-  title: TransModel
+  title: Transmodel
   longTitle: European Reference Data Model for Public Transport
   icon: 🗺️
   logo: /icons/standards/transmodel.png

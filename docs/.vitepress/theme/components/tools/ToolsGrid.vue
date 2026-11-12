@@ -243,10 +243,17 @@ const hasActiveFilters = computed(() => {
 
 // Generate appropriate empty state message based on active filters
 const emptyStateMessage = computed(() => {
+  const contribute = () => `<a href="${withBase('/contribute')}">Contribute a tool →</a>`;
+  const hasTextFilter = !!props.textFilter && props.textFilter.trim().length > 0;
+
+  // A standard page (standard from the prop or the route) that no tool lists yet
+  if (!hasTextFilter && currentStandard.value.length > 0) {
+    return `No tools listed for this standard yet. ${contribute()}`;
+  }
   if (hasActiveFilters.value) {
     return 'No tools match your current filters. Try adjusting your search or filters.';
   }
-  return `No tools available in this category yet. <a href="${withBase('/contribute')}">Contribute a tool →</a>`;
+  return `No tools available in this category yet. ${contribute()}`;
 });
 </script>
 

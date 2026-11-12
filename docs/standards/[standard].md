@@ -13,28 +13,7 @@ import { withBase } from 'vitepress'
 
 ::: details {{ $params.details.longTitle }}
 
-<img
-  v-if="$params.details.logo"
-  :src="withBase($params.details.logo)"
-  :alt="$params.standardName"
-  style="display: block; height: 4rem; width: auto; margin: 1.25rem 0 -0.75rem; padding: 0;"
-/>
-
-### Overview
-
-**Domain:** {{ $params.details.domain }}
-
-**Status:** {{ $params.details.status }}
-
-**More info:** <a :href="$params.details.link" target="_blank">{{ $params.details.link }}</a>
-
-{{ $params.details.purpose }}
-
-### Technical Details
-
-**Format/Technology:** {{ $params.details.format_technology }}
-
-**Maintainer/Origin:** {{ $params.details.maintainer_origin }}
+<StandardInfo />
 
 <div v-if="$params.details.related_standards_with_titles && $params.details.related_standards_with_titles.length > 0">
 
@@ -52,7 +31,5 @@ import { withBase } from 'vitepress'
 </div>
 
 ## Tools
-
-Browse all tools that support the **{{ $params.standardName }}** standard.
 
 <ToolsFilter :standard="$params.standard" />

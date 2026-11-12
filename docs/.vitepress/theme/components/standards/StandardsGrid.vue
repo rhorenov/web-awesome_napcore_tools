@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { data as tools } from '@/core/data-loaders/tools.data';
-import { getStandardMetadata } from '@/core/metadata/standards';
+import { STANDARDS } from '@/core/metadata/standards';
 import { withBase } from 'vitepress';
 
 interface Props {
@@ -30,32 +30,16 @@ const props = withDefaults(defineProps<Props>(), {
   sortByCount: false,
 });
 
-// Extract unique standards and count tools
+// Every standard in standards.yaml with its tool count (0 when no tool lists it yet)
 const standards = computed(() => {
-  const standardsMap = new Map<string, number>();
-
-  // Count tools per standard (standards are already slugified in tool frontmatter)
-  for (const tool of tools) {
-    if (tool.standards && tool.standards.length > 0) {
-      for (const standardSlug of tool.standards) {
-        const count = standardsMap.get(standardSlug) || 0;
-        standardsMap.set(standardSlug, count + 1);
-      }
-    }
-  }
-
-  // Convert to array with metadata
-  const standardsList = Array.from(standardsMap.entries()).map(([slug, count]) => {
-    const metadata = getStandardMetadata(slug);
-    return {
-      name: metadata.title,
-      slug,
-      count,
-      icon: metadata.icon,
-      logo: metadata.logo,
-      description: metadata.description,
-    };
-  });
+  const standardsList = Object.entries(STANDARDS).map(([slug, standard]) => ({
+    name: standard.title,
+    slug,
+    count: tools.filter((tool) => tool.standards?.includes(slug)).length,
+    icon: standard.icon,
+    logo: standard.logo,
+    description: standard.description,
+  }));
 
   // Sort by count if requested (descending order), otherwise alphabetically by title
   let result: typeof standardsList;
