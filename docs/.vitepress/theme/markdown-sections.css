@@ -13,7 +13,7 @@
  * Wikipedia-style collapsible sections that blend seamlessly with text flow.
  *
  * Usage in markdown:
- *   ::: details plain Section Title
+ *   ::: details Section Title {.plain}
  *   Content here...
  *   :::
  *
